@@ -1,6 +1,7 @@
 import express from "express";
 import startup from "./lib/startup";
 import api from "./api/index";
+import socket from "./websocket/socket";
 import middleware from "./middleware/index";
 import logger from "./lib/logger";
 
@@ -12,12 +13,13 @@ startup()
     middleware(app);
     api(app);
 
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
       if (process.send) {
         process.send(`Server running at http://localhost:${port}\n\n`);
       }
     });
 
+    socket(server);
     process.on("message", (message) => {
       console.log(message);
     });
