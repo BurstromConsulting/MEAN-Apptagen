@@ -1,0 +1,40 @@
+<div class="container" >
+    <mat-card *ngIf="!!id; else list" [ngStyle]="{'background-color': person.color}">
+        <mat-card-title>
+            <p>{{person.name}}</p>
+        </mat-card-title>
+        <mat-card-subtitle>
+            {{person.title}}
+        </mat-card-subtitle>
+        <span>This is {{person.name}}s status: {{person.status}} </span>
+        <mat-card-content>
+            <p>Hejsan hoppsan, jag heter {{person.name}} och jag tycker om mitt tangentbord.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec eros risus. Etiam vestibulum vel est nec tincidunt. Ut at odio at magna vestibulum maximus. Fusce tellus orci, interdum ac dui tristique, volutpat maximus purus. Sed dapibus rutrum tristique. Mauris mollis non mi ac vestibulum. Vestibulum sagittis magna convallis facilisis pharetra. Ut consectetur eget enim in sagittis.
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button>I'm a button</button>
+        </mat-card-actions>
+        <input list="rainbow" #color type="color" (change)="person.color=color.value" [value]="person.color"/>
+    </mat-card>
+    <ng-template #list>
+        <mat-list>
+            <mat-list-item *ngFor="let employee of people" [ngStyle]="{'background-color': employee.color}" (click)="navigateTo(employee.id)">
+                <h3 matLine>{{employee.id}}</h3>
+                <h3 matLine> {{employee.name}}</h3>
+                <p matLine> {{employee.title}}</p>
+            </mat-list-item>
+          </mat-list>
+        </ng-template>
+        
+</div>
+
+<datalist id="rainbow">
+    <option value="#FF0000">Red</option>
+    <option value="#FFA500">Orange</option>
+    <option value="#FFFF00">Yellow</option>
+    <option value="#008000">Green</option>
+    <option value="#0000FF">Blue</option>
+    <option value="#4B0082">Indigo</option>
+    <option value="#EE82EE">Violet</option>
+</datalist>
