@@ -1,0 +1,7 @@
+mat-card-title {
+    justify-content: start;
+    display: flex;
+}
+mat-card-title > app-status-icon{
+    margin-right: 10px;  
+}
