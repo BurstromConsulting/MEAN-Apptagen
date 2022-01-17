@@ -1,5 +1,6 @@
-<div class="container">
-  <header class="jumbotron">
-    <p>{{ content }}</p>
-  </header>
+
+<app-update-status *ngIf="!!loggedInUser" [status]="loggedInUser.status" (updatedStatus)="updatePersonStatus($event)"></app-update-status>
+<div>
+  <app-person-card *ngFor="let user of userdata" (titleClick)="navigateTo($event)" [person]="user">
+  </app-person-card>
 </div>

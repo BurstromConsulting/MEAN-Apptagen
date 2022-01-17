@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { employees, People } from '../people';
+import { take } from 'rxjs';
+import { Person } from '../person';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-person',
@@ -8,28 +10,19 @@ import { employees, People } from '../people';
   styleUrls: ['./person.component.css']
 })
 export class PersonComponent implements OnInit {
-  people:People[] = employees;
-  id!: number;
-  person!:People;
-  constructor(private route:ActivatedRoute, private router:Router) { }
-  
+  id!: string;
+  person!: Person;
+  constructor(private userService: UserService, private route:ActivatedRoute, private router:Router) { }
 
-
-  navigateTo(id: number) { 
-    this.router.navigate(['person', id])
-    
-  }
 
   ngOnInit(): void {
-    this.route.paramMap.pipe().subscribe(p => {
-      const localId = p.get('id')
-    if (!!localId){
-      this.id = +localId;
-      console.log(p)
-      this.person = this.people.filter(p => p.id === this.id)[0]
-    };
-  });
-
+    this.route.paramMap.pipe(take(1)).subscribe((p:any) => {
+      this.id = p.params.id;
+      this.userService.getUserById(this.id).pipe(take(1)).subscribe((json:Person) => {
+        console.log(json);
+        this.person = json;
+      })
+    })
   }
 
 }

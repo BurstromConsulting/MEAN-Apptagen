@@ -1,5 +1,5 @@
 <mat-card *ngIf="!!person">
-        <mat-card-title>
+        <mat-card-title (click)="onTitleClick()">
             <app-status-icon [color]="person.status.availability.color" [size]="20"></app-status-icon>
             <p>{{person.name}}</p>
         </mat-card-title>
@@ -16,13 +16,3 @@
             <input list="rainbow" #color type="color" (change)="person.status.availability.color=color.value" [value]="person.color"/>
         </mat-card-actions>
     </mat-card>
-
-<datalist id="rainbow">
-    <option value="#FF0000">Red</option>
-    <option value="#FFA500">Orange</option>
-    <option value="#FFFF00">Yellow</option>
-    <option value="#008000">Green</option>
-    <option value="#0000FF">Blue</option>
-    <option value="#4B0082">Indigo</option>
-    <option value="#EE82EE">Violet</option>
-</datalist>

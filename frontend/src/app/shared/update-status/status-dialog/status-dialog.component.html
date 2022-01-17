@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Hi {{status.availability.status}}</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Select Status</mat-label>
+        <mat-select [(ngModel)]="status.availability" name="availability">
+          <mat-option *ngFor="let a of availabilities" [value]="a">
+            {{a.status}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button cdkFocusInitial (click)="close()">Ok</button>
+</div>

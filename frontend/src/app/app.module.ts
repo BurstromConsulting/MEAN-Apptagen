@@ -11,6 +11,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { BoardModeratorComponent } from './board-moderator/board-moderator.component';
 import { BoardUserComponent } from './board-user/board-user.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 // Auth Guide Imports below
 import { FormsModule } from '@angular/forms';
@@ -19,6 +21,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
+import { PersonCardComponent } from './shared/person-card/person-card.component';
+import { PersonCardModule } from './shared/person-card/person-card.module';
+import { UpdateStatusModule } from './shared/update-status/update-status.module';
 
 
 const route = [
@@ -45,7 +50,10 @@ const route = [
     MatListModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    PersonCardModule,
+    UpdateStatusModule,
+    BrowserAnimationsModule,
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

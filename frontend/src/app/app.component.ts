@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { employees, People } from './people';
+import { Person } from './person';
 import { TokenStorageService } from './_services/token-storage.service';
 
 @Component({
@@ -15,9 +15,8 @@ export class AppComponent implements OnInit{
   showModeratorBoard = false;
   username?: string;
   title = 'MEAN-Apptagen';
-  people:People[] = employees;
   id!: number;
-  person!:People;
+  person!:Person;
 
 
   

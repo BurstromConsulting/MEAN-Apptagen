@@ -7,7 +7,6 @@ const RefreshToken = db.refreshToken;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const Availability = require("../models/availability");
-const { availability } = require("../models");
 
 exports.signup = (req, res) => {
   const user = new User({
@@ -74,6 +73,7 @@ exports.signup = (req, res) => {
       username: req.body.username
     })
       .populate("roles", "-__v")
+      .populate("status.availability")
       .exec(async(err, user) => {
         if (err) {
           res.status(500).send({ message: err });

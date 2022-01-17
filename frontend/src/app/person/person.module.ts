@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
 import { PersonComponent } from './person.component';
 import { RouterModule } from '@angular/router';
-import {MatListModule} from '@angular/material/list';
+import { PersonCardModule } from '../shared/person-card/person-card.module';
 
 const route = [
   {path: '', component: PersonComponent
@@ -12,7 +11,7 @@ const route = [
 @NgModule({
   declarations: [PersonComponent],
   imports: [
-    CommonModule, MatCardModule, RouterModule.forChild(route), MatListModule
+    CommonModule, RouterModule.forChild(route), PersonCardModule,
   ],
 
   exports: [
