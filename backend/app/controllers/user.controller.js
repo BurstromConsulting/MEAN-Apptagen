@@ -1,5 +1,6 @@
 const db = require("../models");
 const User = db.user;
+const Availability = db.availability;
 const ObjectId = require('mongoose').Types.ObjectId;
 
 
@@ -27,13 +28,21 @@ exports.moderatorBoard = (req, res) => {
   res.status(200).send("Moderator Content.");
 };
 
-exports.updateStatus = (req, res) => {
-  console.log(req.body, ObjectId(req.body.availability));
+exports.updateStatus = (req, res, socketio) => {
   const status = {
     message: req.body.message,
     availability: ObjectId(req.body.availability)
   }
   User.updateOne({ _id: req.params.id}, {status: status},(err, result) => {
+    Availability.findById(req.body.availability, (erro, resp) => {
+      socketio.custom.broadcastUpdate({
+        status: {
+          message: req.body.message,
+          availability: resp,
+          
+        },
+        personId: req.params.id})
+      })
     console.log(err, result);
     res.status(200).send();  
   })

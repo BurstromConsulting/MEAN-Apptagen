@@ -21,6 +21,8 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.6",
-    "uuidv4": "^6.2.12"
+    "socket.io": "^4.4.1",
+    "uuidv4": "^6.2.12",
+    "ws": "^8.4.2"
   }
 }

@@ -7,6 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
     StatusDialogComponent
   ],
   imports: [
-    CommonModule, MatButtonModule, MatDialogModule, MatInputModule, MatButtonModule, ReactiveFormsModule, FormsModule, MatSelectModule,
+    CommonModule, MatButtonModule, MatDialogModule, MatInputModule, MatButtonModule, ReactiveFormsModule, FormsModule, MatSelectModule, MatButtonToggleModule
   ],
   exports: [
     UpdateStatusComponent

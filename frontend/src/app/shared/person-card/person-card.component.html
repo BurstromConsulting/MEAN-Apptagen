@@ -5,6 +5,8 @@
         </mat-card-title>
         <mat-card-subtitle>
             {{person.status.availability.status}}
+             - 
+            {{person.status.message}}
         </mat-card-subtitle>
         <mat-card-content *ngIf="detailed">
             <p>Hejsan hoppsan, jag heter {{person.name}} och jag tycker om mitt tangentbord.

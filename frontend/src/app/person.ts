@@ -23,7 +23,4 @@ enum Color {
     Yellow = "#E5BF00",
 }
 
-export const statuscolor = [
-    Color.Red, Color.Blue, Color.Green, Color.Yellow
-];
 

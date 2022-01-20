@@ -1,7 +1,7 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/user.controller");
 
-module.exports = function(app) {
+module.exports = function(app, socketio) {
   app.use(function(req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
@@ -16,7 +16,9 @@ module.exports = function(app) {
 
   app.get("/api/user/:id", controller.findUserById);
 
-  app.put("/api/user/:id/status", controller.updateStatus);
+  app.put("/api/user/:id/status", (req, res) => {
+    controller.updateStatus(req, res, socketio);
+  });
 
   app.get(
     "/api/board/mod",

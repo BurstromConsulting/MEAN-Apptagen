@@ -13,6 +13,7 @@ export class AppComponent implements OnInit{
   isLoggedIn = false;
   showAdminBoard = false;
   showModeratorBoard = false;
+  kioskView = false;
   username?: string;
   title = 'MEAN-Apptagen';
   id!: number;
@@ -26,15 +27,16 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
+    if(!this.kioskView){
+      if (this.isLoggedIn) {
+        const user = this.tokenStorageService.getUser();
+        this.roles = user.roles;
 
-    if (this.isLoggedIn) {
-      const user = this.tokenStorageService.getUser();
-      this.roles = user.roles;
+        this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
+        this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
 
-      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-      this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
-
-      this.username = user.username;
+        this.username = user.username;
+      }
     }
   }
 

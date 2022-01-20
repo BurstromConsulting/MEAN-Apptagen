@@ -1,0 +1,12 @@
+<div mat-dialog-content>
+    <div class=’cookie-banner’ style=’display: none’>
+        <p>
+            By using our website, you agree to our 
+            <a href=’insert-link’>cookie policy</a>
+        </p>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button #cookieTrigger (click)="consent('true')">Accept</button>
+    <button mat-button #cookieTrigger (click)="close()">Close</button>
+</div>
