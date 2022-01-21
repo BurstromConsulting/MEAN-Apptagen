@@ -22,7 +22,8 @@ import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { UserService } from './_services/user.service';
 import { AuthService } from './_services/auth.service';
 import { SocketService } from './_services/socket.service';
-import { CookieConsentModule } from './cookie-consent/cookie-consent.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { StorageService } from './_services/storage.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,9 +41,9 @@ import { CookieConsentModule } from './cookie-consent/cookie-consent.module';
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    CookieConsentModule
+    MatDialogModule,
   ],
-  providers: [UserService, AuthService, SocketService, authInterceptorProviders],
+  providers: [UserService, AuthService, SocketService, authInterceptorProviders, StorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

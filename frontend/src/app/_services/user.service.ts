@@ -1,39 +1,47 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { DataService } from './data.service';
 
-const API_URL = 'http://localhost:8080/api/';
+const PATH_URL = 'user/';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
-  constructor(private http: HttpClient) { }
+export class UserService extends DataService{
+
+  constructor(http: HttpClient) {
+    super(http)
+   }
 
   getPublicContent(): Observable<any> {
-    return this.http.get(API_URL + 'user/all', { responseType: 'json' });
+    return this.get(`${PATH_URL}all`);
   }
 
   getUserBoard(): Observable<any> {
-    return this.http.get(API_URL + 'board/user', { responseType: 'json' });
+    
+    return this.get('board/user');
   }
   
   getUserById(id: string): Observable<any> {
-    return this.http.get(API_URL + 'user/'+id, { responseType: 'json' });
+    
+    return this.get(`${PATH_URL}${id}`);
   }
 
   getModeratorBoard(): Observable<any> {
-    return this.http.get(API_URL + 'board/mod', { responseType: 'json' });
+    
+    return this.get('board/mod');
   }
 
   getAdminBoard(): Observable<any> {
-    return this.http.get(API_URL + 'board/admin', { responseType: 'json' });
+    
+    return this.get('board/admin');
   }
   getAvailabilities(): Observable<any> {
-    return this.http.get(API_URL + 'status/all', { responseType: 'json' });
+    return this.get('status/all');
   }
 
   updatePersonStatus(userId: string, availabilityId: string, message: string): Observable<any> {
-    return this.http.put(API_URL + 'user/'+userId+'/status', {availability: availabilityId, message: message}, { responseType: 'json'});
+    return this.put(`${PATH_URL}${userId}/status`);
   }
 }
