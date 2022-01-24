@@ -1,0 +1,20 @@
+<mat-card *ngIf="!!person">
+        <mat-card-title (click)="onTitleClick()">
+            <app-status-icon [color]="person.status.availability.color" [size]="20"></app-status-icon>
+            <p>{{person.name}}</p>
+        </mat-card-title>
+        <mat-card-subtitle>
+            {{person.status.availability.status}}
+             - 
+            {{person.status.message}}
+        </mat-card-subtitle>
+        <mat-card-content *ngIf="detailed">
+            <p>Hejsan hoppsan, jag heter {{person.name}} och jag tycker om mitt tangentbord.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec eros risus. Etiam vestibulum vel est nec tincidunt. Ut at odio at magna vestibulum maximus. Fusce tellus orci, interdum ac dui tristique, volutpat maximus purus. Sed dapibus rutrum tristique. Mauris mollis non mi ac vestibulum. Vestibulum sagittis magna convallis facilisis pharetra. Ut consectetur eget enim in sagittis.
+            </p>
+        </mat-card-content>
+        <mat-card-actions *ngIf="editMode">
+            <button>I'm a button</button>
+            <input list="rainbow" #color type="color" (change)="person.status.availability.color=color.value" [value]="person.color"/>
+        </mat-card-actions>
+    </mat-card>
