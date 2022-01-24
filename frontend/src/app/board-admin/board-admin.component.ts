@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
+import { ConfigService } from '../_services/config.service';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -12,19 +14,20 @@ export class BoardAdminComponent implements OnInit {
   showModeratorBoard = true;
   isLoggedIn = false;
   username = '';
+  
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, public configService: ConfigService) { }
 
   logout(): void{}
 
   ngOnInit(): void {
-    this.userService.getAdminBoard().subscribe({
-      next: data => {
-        this.content = data;
-      },
-      error: err => {
-        this.content = JSON.parse(err.error).message;
-      }
-    });
+  }
+
+  update(configId: string, users: any) : void{
+    this.configService.updateDevice(configId, "", users);
+  }
+
+  remove(configId: string): void {
+    this.configService.deleteConfig(configId);
   }
 }

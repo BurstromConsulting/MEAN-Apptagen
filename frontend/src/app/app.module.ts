@@ -24,6 +24,7 @@ import { AuthService } from './_services/auth.service';
 import { SocketService } from './_services/socket.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StorageService } from './_services/storage.service';
+import { ConfigService } from './_services/config.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +44,7 @@ import { StorageService } from './_services/storage.service';
     ReactiveFormsModule,
     MatDialogModule,
   ],
-  providers: [UserService, AuthService, SocketService, authInterceptorProviders, StorageService],
+  providers: [UserService, AuthService, SocketService, authInterceptorProviders, StorageService, ConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

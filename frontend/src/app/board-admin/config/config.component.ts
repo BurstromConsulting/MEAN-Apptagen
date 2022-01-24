@@ -1,12 +1,15 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, take } from 'rxjs';
+import { Observable, take, interval, merge, forkJoin  } from 'rxjs';
 import { Person } from 'src/app/person';
 import { UserService } from 'src/app/_services/user.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {map, startWith} from 'rxjs/operators';
+import { ConfigService } from 'src/app/_services/config.service';
+import { MatSelectionListChange } from '@angular/material/list';
+
 // import {COMMA, ENTER} from '@angular/cdk/keycodes';
 // import {Component, ElementRef, ViewChild} from '@angular/core';
 // import {FormControl} from '@angular/forms';
@@ -16,20 +19,21 @@ import {map, startWith} from 'rxjs/operators';
 // import {map, startWith} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-config-template',
-  templateUrl: './config-template.component.html',
-  styleUrls: ['./config-template.component.css']
+  selector: 'app-config',
+  templateUrl: './config.component.html',
+  styleUrls: ['./config.component.css']
 })
-export class ConfigTemplateComponent implements OnInit {
+export class ConfigComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   availablePersons: Person[] = [];
   selectedPersons: Person[] = [];
   configCtrl = new FormControl();
-  
+  availableConfigs: any = [];
   filteredPersons: Observable<Person[]>;
+  selectedConfig: any;
   
   @ViewChild('personInput') personInput!: ElementRef<HTMLInputElement>;
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, public configService: ConfigService) {
 
     this.filteredPersons = this.configCtrl.valueChanges.pipe(
       startWith(null),
@@ -38,13 +42,25 @@ export class ConfigTemplateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getPublicContent().pipe(take(1)).subscribe((data: Person[]) => {
-      this.availablePersons = data;
+    forkJoin([
+      this.userService.getPublicContent(),
+      this.configService.getAllConfigs()
+    ]).pipe(take(1)).subscribe(([users,configs]) => {
+      this.availablePersons = users;
+
+      console.log(users, configs);
+      this.availableConfigs = configs;
     })
   }
 
   send(): void {
 
+  }
+
+  onConfigChange(e: MatSelectionListChange){
+    // console.log(e.options[0].value);
+    this.selectedConfig = e.options[0].value;
+    
   }
 
   add(event: MatChipInputEvent): void {
@@ -80,4 +96,3 @@ export class ConfigTemplateComponent implements OnInit {
     return this.availablePersons.filter(person => person._id.includes(person._id));
   }
 }
-

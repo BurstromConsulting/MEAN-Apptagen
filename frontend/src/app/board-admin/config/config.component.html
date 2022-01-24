@@ -1,8 +1,14 @@
-<mat-form-field class="example-chip-list" appearance="fill">
+<mat-selection-list #configs (selectionChange)="onConfigChange($event)" [multiple]="false" >
+  <mat-list-option *ngFor="let config of availableConfigs"  [value]="config">
+    {{config.name}}
+  </mat-list-option>
+</mat-selection-list>
+
+<mat-form-field *ngIf="!!selectedConfig" class="example-chip-list" appearance="fill">
     <mat-label>Selected People</mat-label>
     <mat-chip-list #chipList aria-label="Person selection">
       <mat-chip
-        *ngFor="let person of selectedPersons"
+        *ngFor="let person of selectedConfig.users"
         (removed)="remove(person)">
         {{person.name}}
         <button matChipRemove>

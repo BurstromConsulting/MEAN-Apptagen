@@ -1,24 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ConfigTemplateComponent } from './config-template.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { ConfigComponent } from './config.component';
+import {MatList, MatListModule} from '@angular/material/list';
 
 const route = [
-  {path: '', component: ConfigTemplateComponent
+  {path: '', component: ConfigComponent
   }
 ]
 
 @NgModule({
   declarations: [
-    ConfigTemplateComponent
+    ConfigComponent
   ],
   imports: [
-    CommonModule, MatChipsModule, MatAutocompleteModule, ReactiveFormsModule, MatIconModule, FormsModule, MatInputModule, RouterModule.forChild(route)
+    CommonModule, MatChipsModule, MatAutocompleteModule, ReactiveFormsModule, MatIconModule, FormsModule, MatInputModule, RouterModule.forChild(route), MatListModule
   ]
 })
-export class ConfigTemplateModule { }
+export class ConfigModule { }

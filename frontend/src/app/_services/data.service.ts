@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -17,8 +17,8 @@ export class DataService {
   put(path: string): Observable<any>{
     return this.http.put(this.API_URL + path, { responseType: 'json' });
   }
-  post(path: string, body: any): Observable<any>{
-    return this.http.post(this.API_URL + path, body);
+  post(path: string, body: any, options={}): Observable<any>{
+    return this.http.post(this.API_URL + path, body, options);
   }
   delete(path:string): Observable<any>{
     return this.http.delete(this.API_URL + path);

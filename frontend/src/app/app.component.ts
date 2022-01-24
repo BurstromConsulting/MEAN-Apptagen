@@ -6,6 +6,7 @@ import { Person } from './person';
 import { StorageService } from './_services/storage.service';
 import { TokenStorageService } from './_services/token-storage.service';
 import * as uuid from 'uuid';
+import { ConfigService } from './_services/config.service';
 
 
 @Component({
@@ -15,6 +16,7 @@ import * as uuid from 'uuid';
 })
 export class AppComponent implements OnInit{
   private roles: string[] = [];
+  private configList: string[] = [];
   isLoggedIn = false;
   showAdminBoard = false;
   showModeratorBoard = false;
@@ -23,17 +25,16 @@ export class AppComponent implements OnInit{
   title = 'MEAN-Apptagen';
   id!: number;
   person!:Person;
-  cookie!: any;
+  config!: any;
 
 
   
-  constructor(private router:Router, private tokenStorageService: TokenStorageService, private localStorageService: StorageService){
+  constructor(private router:Router, private tokenStorageService: TokenStorageService, private localStorageService: StorageService, private configService: ConfigService){
 
   }
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
-    if(!this.kioskView){
 
       if (this.isLoggedIn) {
         const user = this.tokenStorageService.getUser();
@@ -44,10 +45,7 @@ export class AppComponent implements OnInit{
 
         this.username = user.username;
       }
-    }
-    this.localStorageService.setUuid(uuid.v4());
-    
-
+    console.log("Here");
   }
 
 
