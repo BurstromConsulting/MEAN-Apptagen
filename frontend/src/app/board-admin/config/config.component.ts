@@ -9,6 +9,9 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {map, startWith} from 'rxjs/operators';
 import { ConfigService } from 'src/app/_services/config.service';
 import { MatSelectionListChange } from '@angular/material/list';
+import { DeviceService } from 'src/app/_services/device.service';
+import { MatSelectChange, MatSelectTrigger } from '@angular/material/select';
+import { removeElement } from 'src/app/app.constants';
 
 // import {COMMA, ENTER} from '@angular/cdk/keycodes';
 // import {Component, ElementRef, ViewChild} from '@angular/core';
@@ -26,73 +29,74 @@ import { MatSelectionListChange } from '@angular/material/list';
 export class ConfigComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   availablePersons: Person[] = [];
-  selectedPersons: Person[] = [];
   configCtrl = new FormControl();
   availableConfigs: any = [];
   filteredPersons: Observable<Person[]>;
   selectedConfig: any;
+  allDevices: any = [];
+  selectedDevice: any;
   
   @ViewChild('personInput') personInput!: ElementRef<HTMLInputElement>;
-  constructor(private userService: UserService, public configService: ConfigService) {
+  constructor(private userService: UserService, public configService: ConfigService, public deviceService: DeviceService) {
 
     this.filteredPersons = this.configCtrl.valueChanges.pipe(
       startWith(null),
-      map((person: Person | null) => (person ? this._filter(person) : this.availablePersons.slice())),
+      map((input: any | null) => ((!!input && !input.name ) ? this._filter(input) : this.availablePersons.slice())),
     );
   }
 
   ngOnInit(): void {
     forkJoin([
       this.userService.getPublicContent(),
-      this.configService.getAllConfigs()
-    ]).pipe(take(1)).subscribe(([users,configs]) => {
+      this.configService.getAllConfigs(),
+      this.deviceService.getAllDevices()
+    ]).pipe(take(1)).subscribe(([users,configs, devices]) => {
       this.availablePersons = users;
-
+      this.allDevices = devices;
       console.log(users, configs);
       this.availableConfigs = configs;
+      this.selectedConfig = this.availableConfigs[0];
+      this.selectedDevice = this.allDevices[0];
     })
   }
 
-  send(): void {
-
+  sendConfig(): void {
+    this.configService.updateConfig(this.selectedConfig).pipe(take(1)).subscribe( () =>{
+      console.log("Config updated");
+    });
+  }
+  updateDevice(): void {
+    this.deviceService.updateDeviceConfig(this.selectedDevice, this.selectedConfig).pipe(take(1)).subscribe( () =>{
+      console.log("Device updated");
+    });
+  }
+  deleteDevice(): void {
+    this.deviceService.removeDevice(this.selectedDevice.uuid).pipe(take(1)).subscribe( () =>{
+      console.log("Device Deleted");
+      removeElement(this.allDevices, this.selectedDevice);
+    });
   }
 
   onConfigChange(e: MatSelectionListChange){
     // console.log(e.options[0].value);
     this.selectedConfig = e.options[0].value;
-    
   }
 
-  add(event: MatChipInputEvent): void {
-    const person = (event.value);
-    console.log(event);
-
-    // // Add our Person
-    // if (person) {
-    //   this.selectedPersons.push(person);
-    // }
-
-    // Clear the input value
-    event.chipInput!.clear();
-
-    this.configCtrl.setValue(null);
-  }
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedPersons.push(event.option.value);
-    // this.personInput.nativeElement.value = '';
+    this.selectedConfig.users.push(event.option.value);
+    this.personInput.nativeElement.value = '';
     this.configCtrl.setValue(null);
+  }
+  currentDevice(event: MatSelectionListChange): void{
+    console.log(event.options[0].value);
+    this.selectedDevice = event.options[0].value;
   }
 
   remove(person: Person): void {
-    const index = this.selectedPersons.indexOf(person);
-
-    if (index >= 0) {
-      this.selectedPersons.splice(index, 1);
-    }
+      removeElement(this.selectedConfig.users, person);
   }
 
-  private _filter(person: Person): Person[] {
-
-    return this.availablePersons.filter(person => person._id.includes(person._id));
+  private _filter(personName: string): Person[] {
+    return this.availablePersons.filter(person => person.name.toLowerCase().includes(personName.toLowerCase()));
   }
 }

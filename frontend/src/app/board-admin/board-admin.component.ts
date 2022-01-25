@@ -14,17 +14,13 @@ export class BoardAdminComponent implements OnInit {
   showModeratorBoard = true;
   isLoggedIn = false;
   username = '';
-  
+
 
   constructor(private userService: UserService, public configService: ConfigService) { }
 
   logout(): void{}
 
   ngOnInit(): void {
-  }
-
-  update(configId: string, users: any) : void{
-    this.configService.updateDevice(configId, "", users);
   }
 
   remove(configId: string): void {

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Person } from '../person';
 import { DataService } from './data.service';
 import { StorageService } from './storage.service';
 
@@ -23,8 +24,9 @@ export class ConfigService extends DataService{
     return this.get(`${PATH_URL}all`);
   }
 
-  public updateDevice(id: string, name={}, users: any ): Observable<any>{
-    return this.put(`${PATH_URL}config/${id}`);
+  public updateConfig(config: any): Observable<any>{
+    console.log(config);
+    return this.put(`${PATH_URL}${config._id}`, config);
   }
 
   public findConfig(configId: string): Observable<any> {

@@ -1,32 +1,59 @@
-<mat-selection-list #configs (selectionChange)="onConfigChange($event)" [multiple]="false" >
-  <mat-list-option *ngFor="let config of availableConfigs"  [value]="config">
-    {{config.name}}
-  </mat-list-option>
-</mat-selection-list>
-
-<mat-form-field *ngIf="!!selectedConfig" class="example-chip-list" appearance="fill">
-    <mat-label>Selected People</mat-label>
-    <mat-chip-list #chipList aria-label="Person selection">
-      <mat-chip
-        *ngFor="let person of selectedConfig.users"
-        (removed)="remove(person)">
-        {{person.name}}
-        <button matChipRemove>
-          <mat-icon >cancel</mat-icon>
-        </button>
-      </mat-chip>
-      <input
-        placeholder="Select People..."
-        #personInput
-        [formControl]="configCtrl"
-        [matAutocomplete]="auto"
-        [matChipInputFor]="chipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="add($event)">
-    </mat-chip-list>
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let person of filteredPersons | async" [value]="person">
-        {{person.name}}
-      </mat-option>
-    </mat-autocomplete>
- </mat-form-field>
+<div class="config-layout">
+  <div class="config-list-view">
+    <mat-selection-list #configs (selectionChange)="onConfigChange($event)" [multiple]="false">
+      <mat-list-option *ngFor="let config of availableConfigs" [value]="config">
+        {{config.name}}
+      </mat-list-option>
+    </mat-selection-list>
+  </div>
+  <div *ngIf="!!selectedConfig">
+    <div class="">Input Config Name:
+      <div class="example-button-row">
+        <mat-form-field>
+          <input matInput placeholder="Ex. Luleå Config 1" [(ngModel)]="selectedConfig.name">
+        </mat-form-field>
+        <br>
+        <button class="admin-button" mat-raised-button (click)="sendConfig()">Update Config</button>
+      </div>
+    </div>
+    <mat-form-field class="example-chip-list" appearance="fill">
+      <mat-label>Selected People</mat-label>
+      <mat-chip-list #chipList aria-label="Person selection">
+        <mat-chip *ngFor="let person of selectedConfig.users" (removed)="remove(person)">
+          {{person.name}}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        <input placeholder="Select People..." #personInput [formControl]="configCtrl" [matAutocomplete]="auto"
+          [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let person of filteredPersons | async" [value]="person">
+          {{person.name}}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-label>Users to choose from</mat-label>
+    </mat-form-field>
+  </div>
+  <div *ngIf="!!selectedDevice">
+    <div class="">Input Device Name:
+      <div class="example-button-row">
+        <mat-form-field>
+          <input matInput placeholder="Ex. Aurorum Device 1" [(ngModel)]="selectedDevice.name">
+        </mat-form-field>
+        <br>
+        <button class="admin-button" mat-raised-button (click)="updateDevice()">Update Device</button>
+        <br>
+        <button class="admin-button" mat-raised-button (click)="deleteDevice()" color="warn">Delete Device</button>
+      </div>
+    </div>
+    <div class="device-list-view">
+      <mat-selection-list #device [multiple]="false" (selectionChange)="currentDevice($event)">
+        <mat-list-option *ngFor="let device of allDevices" [value]="device">
+          {{device.name}}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+  </div>
+</div>

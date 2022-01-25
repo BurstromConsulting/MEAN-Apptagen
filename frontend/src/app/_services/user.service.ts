@@ -42,6 +42,11 @@ export class UserService extends DataService{
   }
 
   updatePersonStatus(userId: string, availabilityId: string, message: string): Observable<any> {
-    return this.put(`${PATH_URL}${userId}/status`);
+    const body = {
+      userId: userId,
+      availabilityId: availabilityId,
+      message: message
+    };
+    return this.put(`${PATH_URL}${body.userId}/status`, body);
   }
 }
