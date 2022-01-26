@@ -1,0 +1,46 @@
+section {
+    display: table;
+  }
+.device-layout{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  
+
+}
+.config-list-view{
+    min-width: 250px;
+  }
+.device-list-view{
+    min-width: 250px;
+  }
+.device-option-view{
+  margin: 15px;
+}
+.example-label {
+  display: table-cell;
+  font-size: 14px;
+  margin-left: 8px;
+  min-width: 120px;
+  align-content: left;
+}
+.example-chip-list {
+  margin-top: 20px;
+}
+.example-button-row {
+  width: 300px;
+  margin: 10px;
+}
+
+.admin-button{
+  margin-top: 15px;
+}
+
+.config-list {
+display: table-column-group;
+float: left;
+margin-left: 9px;
+margin-top: 9px;
+margin-right: 9px;
+margin-bottom: 9px;
+}
