@@ -1,4 +1,7 @@
-<div>
+<div *ngIf="!!config; else noConfig">
     <app-person-card *ngFor="let user of userdata" [person]="user">
     </app-person-card>
 </div>
+<ng-template #noConfig>
+    <span>No config has been set, please wait while admin assigns you a configuration</span>
+</ng-template>

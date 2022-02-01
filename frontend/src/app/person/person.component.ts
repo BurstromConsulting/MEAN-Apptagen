@@ -19,7 +19,7 @@ export class PersonComponent implements OnInit {
     this.route.paramMap.pipe(take(1)).subscribe((p:any) => {
       this.id = p.params.id;
       this.userService.getUserById(this.id).pipe(take(1)).subscribe((json:Person) => {
-        console.log(json);
+        //console.log(json);
         this.person = json;
       })
     })

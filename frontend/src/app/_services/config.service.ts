@@ -25,7 +25,7 @@ export class ConfigService extends DataService{
   }
 
   public updateConfig(config: any): Observable<any>{
-    console.log(config);
+    //console.log(config);
     return this.put(`${PATH_URL}${config._id}`, config);
   }
 
@@ -36,7 +36,11 @@ export class ConfigService extends DataService{
   public findConfigById(configId: string): Observable<any> {
     return this.get(`${PATH_URL}${configId}`);
   }
-  public createConfig(configId: string): Observable<any> {
-    return this.post(`${PATH_URL}`, {});
+  public createConfig(config: any): Observable<any> {
+    const body = {
+      name: config.name,
+      users: config.users
+    }
+    return this.post(`${PATH_URL}`, body);
   }
 }

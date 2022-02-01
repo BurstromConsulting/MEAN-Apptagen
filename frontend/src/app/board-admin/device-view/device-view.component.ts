@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSelectionListChange } from '@angular/material/list';
 import { forkJoin, take } from 'rxjs';
@@ -10,6 +10,7 @@ import { MatSelectChange, MatSelectTrigger } from '@angular/material/select';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
+import { SocketService } from 'src/app/_services/socket.service';
 
 @Component({
   selector: 'app-device-view',
@@ -29,7 +30,7 @@ export class DeviceViewComponent implements OnInit {
   selectedDevice: any = null;
   deviceLocations: any = [];
 
-  constructor(private userService: UserService, public configService: ConfigService, public deviceService: DeviceService) { }
+  constructor(private userService: UserService, public configService: ConfigService, private socket: SocketService, public deviceService: DeviceService) { }
 
   ngOnInit(): void {
     this.configControl.setValue(this.nullConfig);
@@ -37,31 +38,31 @@ export class DeviceViewComponent implements OnInit {
       this.configService.getAllConfigs(),
       this.deviceService.getAllDevices()
     ]).pipe(take(1)).subscribe(([configs, devices]) => {
-      console.log(devices, configs);
+      //console.log(devices, configs);
       this.allDevices = devices;
       this.availableConfigs = configs;
       this.availableConfigs.push(this.nullConfig);
       this.selectedDevice = this.allDevices[0];
       this.selectedConfig = this.selectedDevice.config;
-      console.log("this selected",this.selectedDevice.config);
+      //console.log("this selected",this.selectedDevice.config);
       if(!!this.selectedDevice.config){
         this.configControl.patchValue(this.availableConfigs.filter((config: any) => config._id === this.selectedDevice.config._id)[0]);
       }
       this.allDevices.forEach((element: any) => {
-        console.log(element);
+        //console.log(element);
         if(this.deviceLocations.includes(element.location)){
         }
         else {
         this.deviceLocations.push(element.location);
         }
       });
-      console.log("Device Locations", this.deviceLocations);
+      //console.log("Device Locations", this.deviceLocations);
     })
   }
 
-  currentDevice(event: MatSelectionListChange): void{
-    console.log(event.options[0].value);
-    this.selectedDevice = event.options[0].value;
+  currentDevice(device: any): void{
+    //console.log("Device: ",device);
+    this.selectedDevice = device;
     if(!!this.selectedDevice.config){
       this.configControl.patchValue(this.availableConfigs.filter((config: any) => config._id === this.selectedDevice.config._id)[0]);
     }else {
@@ -71,22 +72,23 @@ export class DeviceViewComponent implements OnInit {
 
   updateDevice(): void {
     
-    let configSettings = null;
+    let configSettings: null = null;
     if(this.configControl.value !== this.nullConfig){
       configSettings = this.configControl.value;
     }
     this.deviceService.updateDeviceConfig(this.selectedDevice, configSettings).pipe(take(1)).subscribe( () =>{
-      console.log("Device updated");
+      //console.log("Device updated");
+      // this.socket.sendConfigUpdate(configSettings, this.selectedDevice.uuid);
     });
   }
   deleteDevice(): void {
-    this.deviceService.removeDevice(this.selectedDevice.uuid).pipe(take(1)).subscribe( () =>{
-      console.log("Device Deleted");
+    this.deviceService.removeDevice(this.selectedDevice).pipe(take(1)).subscribe( () =>{
+      //console.log("Device Deleted");
       removeElement(this.allDevices, this.selectedDevice);
     });
   }
   selected(event: MatSelectChange): void {
-    // console.log(event);
+    // //console.log(event);
     this.selectedDevice.config = event.value;
   }
 }

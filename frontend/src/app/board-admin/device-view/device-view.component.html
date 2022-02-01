@@ -1,11 +1,11 @@
 <div class="device-layout">
     <div class="device-list-view">
         <h4>Available Devices:</h4>
-        <mat-selection-list #device [multiple]="false" (selectionChange)="currentDevice($event)">
-        <mat-list-option *ngFor="let device of allDevices" [value]="device">
+        <mat-list #device>
+        <mat-list-item  (click)="currentDevice(device)" *ngFor="let device of allDevices" [ngClass]="{selected: device.uuid === selectedDevice.uuid}" class="input">
             {{device.name}}
-        </mat-list-option>
-        </mat-selection-list>
+        </mat-list-item>
+        </mat-list>
     </div>
 
     <div *ngIf="!!selectedDevice">

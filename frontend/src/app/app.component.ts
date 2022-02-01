@@ -5,7 +5,6 @@ import { take } from 'rxjs';
 import { Person } from './person';
 import { StorageService } from './_services/storage.service';
 import { TokenStorageService } from './_services/token-storage.service';
-import * as uuid from 'uuid';
 import { ConfigService } from './_services/config.service';
 
 
@@ -45,7 +44,7 @@ export class AppComponent implements OnInit{
 
         this.username = user.username;
       }
-    console.log("Here");
+    //console.log("Here");
   }
 
 

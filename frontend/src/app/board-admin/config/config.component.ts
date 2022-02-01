@@ -35,6 +35,7 @@ export class ConfigComponent implements OnInit {
   selectedConfig: any;
   allDevices: any = [];
   selectedDevice: any;
+  newConfigs: any = [];
   
   @ViewChild('personInput') personInput!: ElementRef<HTMLInputElement>;
   constructor(private userService: UserService, public configService: ConfigService, public deviceService: DeviceService) {
@@ -53,7 +54,7 @@ export class ConfigComponent implements OnInit {
     ]).pipe(take(1)).subscribe(([users,configs, devices]) => {
       this.availablePersons = users;
       this.allDevices = devices;
-      console.log(users, configs);
+      //console.log(users, configs);
       this.availableConfigs = configs;
       this.selectedConfig = this.availableConfigs[0];
       this.selectedDevice = this.allDevices[0];
@@ -61,25 +62,42 @@ export class ConfigComponent implements OnInit {
   }
 
   sendConfig(): void {
-    this.configService.updateConfig(this.selectedConfig).pipe(take(1)).subscribe( () =>{
-      console.log("Config updated");
-    });
+    if (!!this.selectedConfig.new) {
+      this.configService.createConfig(this.selectedConfig).pipe(take(1)).subscribe( (data) => {
+        //console.log("Config Created");
+        removeElement(this.newConfigs, data);
+        this.selectedConfig._id = data._id;
+        this.availableConfigs.push(this.selectedConfig);
+      })
+    }
+    else {
+      this.configService.updateConfig(this.selectedConfig).pipe(take(1)).subscribe( () =>{
+        //console.log("Config updated");
+    
+      });
+    }
   }
   // updateDevice(): void {
   //   this.deviceService.updateDeviceConfig(this.selectedDevice, this.selectedConfig).pipe(take(1)).subscribe( () =>{
-  //     console.log("Device updated");
+  //     //console.log("Device updated");
   //   });
   // }
   // deleteDevice(): void {
   //   this.deviceService.removeDevice(this.selectedDevice.uuid).pipe(take(1)).subscribe( () =>{
-  //     console.log("Device Deleted");
+  //     //console.log("Device Deleted");
   //     removeElement(this.allDevices, this.selectedDevice);
   //   });
   // }
 
-  onConfigChange(e: MatSelectionListChange){
-    // console.log(e.options[0].value);
-    this.selectedConfig = e.options[0].value;
+  onConfigChange(config: any){
+    // //console.log(e.options[0].value); 
+    this.selectedConfig = config;
+  }
+  
+  newConfig(): void{
+  const newconfig = {_id: this.newConfigs.length , name: `New Config ${this.newConfigs.length}`, users: [], new: true};
+  this.newConfigs.push(newconfig);
+  this.selectedConfig = newconfig;
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -88,7 +106,7 @@ export class ConfigComponent implements OnInit {
     this.configCtrl.setValue(null);
   }
   // currentDevice(event: MatSelectionListChange): void{
-  //   console.log(event.options[0].value);
+  //   //console.log(event.options[0].value);
   //   this.selectedDevice = event.options[0].value;
   // }
 

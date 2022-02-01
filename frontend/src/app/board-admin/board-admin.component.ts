@@ -29,7 +29,7 @@ export class BoardAdminComponent implements OnInit {
   }
   navigateTo(path: string) { 
     this.router.navigate(['admin', path])
-    console.log(path);
+    //console.log(path);
     
   }
 }

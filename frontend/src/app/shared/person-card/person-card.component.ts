@@ -18,7 +18,7 @@ export class PersonCardComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log('Person',this.person);
+    //console.log('Person',this.person);
   }
   onTitleClick(): void {
     this.titleClick.emit(this.person._id);

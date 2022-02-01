@@ -16,6 +16,8 @@ module.exports = function(app, socketio) {
 
   app.get("/api/user/:id", controller.findUserById);
 
+  app.post("/api/user/list", controller.findUsersByList);
+
   app.put("/api/user/:id/status", (req, res) => {
     controller.updateStatus(req, res, socketio);
   });

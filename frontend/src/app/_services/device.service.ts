@@ -19,14 +19,21 @@ export class DeviceService extends DataService{
     return this.get(`${PATH_URL}all`);
   }
   addNewDevice(deviceId: string): Observable<any> {
-    return this.post(`${PATH_URL}all`, deviceId);
+    const body = {
+      deviceId:deviceId,
+      location: "default"
+    }
+    return this.post(`${PATH_URL}`, body);
   }
 
   getDeviceById(deviceId: any): Observable<any> {
     return this.get(`${PATH_URL}${deviceId}`);
   }
-  removeDevice(deviceId: any): Observable<any> {
-    return this.delete(`${PATH_URL}${deviceId}`);
+  removeDevice(device: any): Observable<any> {
+    const id = {
+      uuid: device.uuid
+    }
+    return this.delete(`${PATH_URL}${id.uuid}`);
   }
 
   updateDeviceConfig(device: any, config: any): Observable<any> {

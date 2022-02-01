@@ -1,10 +1,16 @@
 <div class="config-layout">
   <div class="config-list-view">
-    <mat-selection-list #configs (selectionChange)="onConfigChange($event)" [multiple]="false">
-      <mat-list-option *ngFor="let config of availableConfigs" [value]="config">
+    <mat-list #configs >
+      <mat-list-item (click)="newConfig()"  class="input">
+        <span>+ add Config</span>
+      </mat-list-item>
+      <mat-list-item (click)="onConfigChange(config)" *ngFor="let config of newConfigs" [ngClass]="{selected: config._id === selectedConfig._id}" class="input">
         {{config.name}}
-      </mat-list-option>
-    </mat-selection-list>
+      </mat-list-item>
+      <mat-list-item (click)="onConfigChange(config)" *ngFor="let config of availableConfigs" [ngClass]="{selected: config._id === selectedConfig._id}"  class="input">
+        {{config.name}}
+      </mat-list-item>
+    </mat-list>
   </div>
   <div *ngIf="!!selectedConfig">
     <div class="">Input Config Name:

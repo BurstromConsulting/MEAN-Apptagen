@@ -24,7 +24,6 @@ app.get("/", (req, res) => {
 
 require('./app/routes/auth.routes')(app);
 require('./app/routes/status.routes')(app);
-
 // set port, listen for requests
 
 const PORT = process.env.PORT || 8080;
@@ -33,9 +32,9 @@ const server = app.listen(PORT, () => {
 })
 
 const socketio = require('./app/websocket/serversocket')(server);
-
 require('./app/routes/user.routes')(app, socketio);
-
+require('./app/routes/device.routes')(app, socketio);
+require('./app/routes/config.routes')(app, socketio);
 db.mongoose
 .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
         useNewUrlParser: true,
@@ -58,9 +57,9 @@ function initial() {
                     name: r
                 }).save(err => {
                     if (err){
-                        console.log("error", err);
+                        //console.log("error", err);
                     }
-                    console.log(`added '${r}' to roles collection`);
+                    //console.log(`added '${r}' to roles collection`);
     
                 });
             });
@@ -76,9 +75,9 @@ function initial() {
                     color: s.color
                 }).save(err => {
                     if (err){
-                        console.log("Ah, shiet, ett error", err);
+                        //console.log("Ah, shiet, ett error", err);
                     }
-                    console.log(`added '${s.status}' to availability collection`);
+                    //console.log(`added '${s.status}' to availability collection`);
                 });
             });
         }

@@ -27,6 +27,13 @@ export class UserService extends DataService{
     
     return this.get(`${PATH_URL}${id}`);
   }
+  
+  getUserByIdArray(id: string[]): Observable<any> {
+    const body = {
+      idList: id
+    }
+    return this.post(`${PATH_URL}list`, body);
+  }
 
   getModeratorBoard(): Observable<any> {
     

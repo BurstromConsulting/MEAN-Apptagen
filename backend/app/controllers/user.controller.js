@@ -15,13 +15,25 @@ exports.findUserById = (req, res) => {
     res.status(200).send(result);
   }).select('-password').populate("status.availability");
 };
+exports.findUsersByList = (req, res) => {
+  User.find({
+    '_id': {
+      $in: req.body.idList.map((user) => ObjectId(user))
+    }
+  }, (err, result) => {
+    res.status(200).send(result);
+  }).populate({ path: 'status.availability', select: '-__v' }).select('-password -__v');
+};
 
 exports.userBoard = (req, res) => {
   res.status(200).send("User Content.");
 };
 
 exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
+  User.findById(req.params.id, (err, result) => {
+  res.status(200).send(result);
+}).select('-password').populate("status.availability").populate("roles");
+  
 };
 
 exports.moderatorBoard = (req, res) => {
@@ -35,7 +47,7 @@ exports.updateStatus = (req, res, socketio) => {
   }
   User.updateOne({ _id: req.params.id}, {status: status},(err, result) => {
     Availability.findById(req.body.availability, (erro, resp) => {
-      socketio.custom.broadcastUpdate({
+      socketio.custom.broadcastStatus({
         status: {
           message: req.body.message,
           availability: resp,
@@ -43,7 +55,7 @@ exports.updateStatus = (req, res, socketio) => {
         },
         personId: req.params.id})
       })
-    console.log(err, result);
+    //console.log(err, result);
     res.status(200).send();  
   })
 }
