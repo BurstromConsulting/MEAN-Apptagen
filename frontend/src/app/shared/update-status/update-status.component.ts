@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Status } from 'src/app/person';
+import { Person, Status } from 'src/app/person';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
 import { StatusDialogComponent } from './status-dialog/status-dialog.component';
 import { take } from 'rxjs';
+import { UserService } from 'src/app/_services/user.service';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-update-status',
@@ -20,9 +22,23 @@ export class UpdateStatusComponent implements OnInit {
       color: "black"
     }
   };
+  @Input() user: Person = {
+    _id: "",
+    id: "",
+    name: "",
+    title: "",
+    status: {
+      message: "",
+      availability: {
+        _id: "",
+        status: "",
+        color: "black"
+      }},
+    roles: []
+  };
   @Output() updatedStatus: EventEmitter<any> = new EventEmitter();
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private userService: UserService, private tokenService: TokenStorageService){ }
 
   ngOnInit(): void {
   }
@@ -31,7 +47,11 @@ export class UpdateStatusComponent implements OnInit {
 
     statusOptions.afterClosed().pipe(take(1)).subscribe((data: Status) => {
       if(!!data){
-        this.onUpdatedStatus(data);
+        
+        this.userService.updatePersonStatus(this.user._id, data.availability._id, data.message ).pipe(take(1)).subscribe(() => {
+          this.onUpdatedStatus(data);
+        })
+        
       }
     });
     }

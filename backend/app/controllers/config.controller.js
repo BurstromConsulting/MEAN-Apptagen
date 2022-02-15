@@ -36,6 +36,9 @@ exports.updateConfig = (req, res, socketio) => {
     
 };
 
+
+
+
 exports.createConfig = (req, res) => {
     //console.log(req.body);
     const config = new Config({

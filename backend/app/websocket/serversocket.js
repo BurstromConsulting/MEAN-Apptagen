@@ -36,9 +36,10 @@ module.exports = function (app) {
         console.log("client ", data.uuid, "left room ", "config/" + data.oldId);
       }
     })
-    // socket.on("status/update", (data) => {
-    //     broadcastUpdate(io, data);
-    // })
+    socket.on("status/update", (data) => {
+        broadcastUpdate(io, data);
+    })
+    //TO-DO: Add Socket.on Event for Style updates
   });
   io.custom = {};
   io.custom.configRooms = new Map();
@@ -67,6 +68,6 @@ module.exports = function (app) {
 
   return io;
 };
-// function broadcastUpdate(socket, status){
-//     socket.emit("status/broadcast", status);
-//}
+function broadcastUpdate(socket, status){
+    socket.emit("status/broadcast", status);
+}

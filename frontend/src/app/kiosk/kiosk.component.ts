@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Person } from '../person';
@@ -16,6 +16,7 @@ import { DeviceService } from '../_services/device.service';
 })
 export class KioskComponent implements OnInit {
 
+
   content?: string;
   loggedInUser: Person | null = null;
   userdata: Person[] = [];
@@ -27,7 +28,7 @@ export class KioskComponent implements OnInit {
     this.uuid = this.localStorageService.getUuid();
   }
   ngOnInit(): void {
-    if(this.localStorageService.hasUuid()){
+    if (this.localStorageService.hasUuid()) {
       //console.log(this.uuid);
       this.uuid = this.localStorageService.getUuid();
       // this.deviceService.getDeviceById(this.uuid).pipe(take(1)).subscribe({
@@ -35,10 +36,10 @@ export class KioskComponent implements OnInit {
       //   //console.log("uuid test",res);
       // }
       // });
-        this.deviceService.getDeviceById(this.uuid).pipe(take(1)).subscribe({
+      this.deviceService.getDeviceById(this.uuid).pipe(take(1)).subscribe({
         next: (deviceData: any) => {
           //console.log(!deviceData);
-          if(!deviceData){
+          if (!deviceData) {
 
             this.localStorageService.removeUuid();
             this.uuid = uuid.v4();
@@ -46,19 +47,19 @@ export class KioskComponent implements OnInit {
               this.localStorageService.setUuid(this.uuid);
             });
 
-          }else {
+          } else {
 
-            if(!deviceData.config){
+            if (!deviceData.config) {
               return;
             }
-            
+
             this.configService.findConfigById(deviceData.config._id).pipe(take(1)).subscribe({
-              next: (configData: any) =>{
+              next: (configData: any) => {
                 //console.log("This is Config Data", configData);
                 this.config = configData;
                 this.socket.changeConfigRoom(this.config._id.valueOf(), this.uuid);
                 this.userService.getUserByIdArray(this.config.users.map((u: any) => u._id)).pipe(take(1)).subscribe({
-                  next: (personData:Person[]) => {
+                  next: (personData: Person[]) => {
                     //console.log("This is userdata", personData);
                     this.userdata = personData;
                     //console.log(this.userdata);
@@ -66,7 +67,7 @@ export class KioskComponent implements OnInit {
                   error: err => {
                     //console.log(err);
                   }
-            
+
                 });
               },
               error: err => {
@@ -75,7 +76,7 @@ export class KioskComponent implements OnInit {
             });
           }
           this.socket.registerUuid(this.uuid);
-          
+
         },
         error: err => {
           //console.log(err);
@@ -90,9 +91,9 @@ export class KioskComponent implements OnInit {
       });
     }
     this.socket.configUpdate.subscribe((data) => {
-      if(!data){
+      if (!data) {
         this.config = null;
-        return ;
+        return;
       }
       //console.log("Hello, this is data", data);
       this.userService.getUserByIdArray(data.users).pipe(take(1)).subscribe((users) => {

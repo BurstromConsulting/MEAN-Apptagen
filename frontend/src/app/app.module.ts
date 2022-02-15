@@ -29,9 +29,7 @@ import { ConfigService } from './_services/config.service';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent,
     BoardModeratorComponent,
-    BoardUserComponent,
   ],
   imports: [
     BrowserModule,

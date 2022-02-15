@@ -3,8 +3,9 @@ const cors = require("cors");
 
 const app = express();
 
+
 var corsOption = {
-    origin: "http://localhost:4200"
+    origin: ["http://localhost", "http://localhost:4200", "http://192.168.1.42",]
 };
 
 const db = require("./app/models");
@@ -15,6 +16,7 @@ const Availability = db.availability;
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(express.static("files"));
 
 // routes
 app.get("/", (req, res) => {
@@ -35,6 +37,7 @@ const socketio = require('./app/websocket/serversocket')(server);
 require('./app/routes/user.routes')(app, socketio);
 require('./app/routes/device.routes')(app, socketio);
 require('./app/routes/config.routes')(app, socketio);
+require('./app/routes/style.routes')(app, socketio);
 db.mongoose
 .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
         useNewUrlParser: true,

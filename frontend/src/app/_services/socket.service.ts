@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
+import { environment } from 'src/environments/environment';
 import { Status } from '../person';
 import { StorageService } from './storage.service';
 
@@ -8,7 +9,7 @@ import { StorageService } from './storage.service';
   providedIn: 'root'
 })
 export class SocketService {
-  private URL = "localhost:8080/";
+  private URL = `${environment.serverUrl}:${environment.port}/`;
   private socket!: Socket;
   private _statusUpdate: Subject<any> = new Subject();
   private _configUpdate: Subject<any> = new Subject();

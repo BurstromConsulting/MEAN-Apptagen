@@ -5,3 +5,16 @@
     max-height: 150px;
     max-width: 150px;
 }
+
+.register-container{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.register-card{
+    max-width: fit-content;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 0 10px;
+}

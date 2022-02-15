@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Person } from './person';
 import { StorageService } from './_services/storage.service';
@@ -25,10 +25,10 @@ export class AppComponent implements OnInit{
   id!: number;
   person!:Person;
   config!: any;
-
+  showToolbar = true;
 
   
-  constructor(private router:Router, private tokenStorageService: TokenStorageService, private localStorageService: StorageService, private configService: ConfigService){
+  constructor(public router:Router, private tokenStorageService: TokenStorageService, private localStorageService: StorageService, private configService: ConfigService){
 
   }
 
@@ -44,6 +44,11 @@ export class AppComponent implements OnInit{
 
         this.username = user.username;
       }
+      this.router.events.subscribe((event)=>{
+        if(event instanceof NavigationEnd){
+          this.showToolbar = !(event.urlAfterRedirects === '/kiosk');
+        }
+      })
     //console.log("Here");
   }
 

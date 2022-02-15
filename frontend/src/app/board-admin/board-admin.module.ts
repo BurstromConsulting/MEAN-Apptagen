@@ -9,7 +9,8 @@ const route = [
   {path: '', children: [
     {path: '', component: BoardAdminComponent},
     {path: 'config', loadChildren: () => import('./config/config.module').then(m => m.ConfigModule), pathMatch: "full"},
-    {path: 'device', loadChildren: () => import('./device-view/device-view.module').then(m => m.DeviceViewModule), pathMatch: "full"}
+    {path: 'device', loadChildren: () => import('./device-view/device-view.module').then(m => m.DeviceViewModule), pathMatch: "full"},
+    {path: 'style', loadChildren: () => import('./style-view/style-view.module').then(m => m.StyleViewModule), pathMatch: "full"}
   ]}
 ]
 

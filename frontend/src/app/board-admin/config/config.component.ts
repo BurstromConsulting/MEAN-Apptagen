@@ -77,17 +77,7 @@ export class ConfigComponent implements OnInit {
       });
     }
   }
-  // updateDevice(): void {
-  //   this.deviceService.updateDeviceConfig(this.selectedDevice, this.selectedConfig).pipe(take(1)).subscribe( () =>{
-  //     //console.log("Device updated");
-  //   });
-  // }
-  // deleteDevice(): void {
-  //   this.deviceService.removeDevice(this.selectedDevice.uuid).pipe(take(1)).subscribe( () =>{
-  //     //console.log("Device Deleted");
-  //     removeElement(this.allDevices, this.selectedDevice);
-  //   });
-  // }
+
 
   onConfigChange(config: any){
     // //console.log(e.options[0].value); 
@@ -105,10 +95,7 @@ export class ConfigComponent implements OnInit {
     this.personInput.nativeElement.value = '';
     this.configCtrl.setValue(null);
   }
-  // currentDevice(event: MatSelectionListChange): void{
-  //   //console.log(event.options[0].value);
-  //   this.selectedDevice = event.options[0].value;
-  // }
+
 
   remove(person: Person): void {
       removeElement(this.selectedConfig.users, person);
