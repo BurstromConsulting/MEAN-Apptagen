@@ -5,3 +5,15 @@
     max-height: 150px;
     max-width: 150px;
 }
+.login-container{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.login-card{
+    max-width: fit-content;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 0 10px;
+}

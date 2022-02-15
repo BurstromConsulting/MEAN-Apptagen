@@ -1,0 +1,5 @@
+.status-button {
+    float: right;
+    position: sticky;
+    z-index: 2;
+}

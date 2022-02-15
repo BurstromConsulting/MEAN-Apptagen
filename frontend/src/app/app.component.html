@@ -1,5 +1,5 @@
 <div id="app">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="showToolbar">
       <a routerLink="" class="navbar-brand">Apptagen</a>
       <ul class="navbar-nav mr-auto" routerLinkActive="active">
         <li class="nav-item">
@@ -35,7 +35,7 @@
       </ul>
     </nav>
   
-    <div class="container">
+    <div class="content">
       <router-outlet></router-outlet>
     </div>
   </div>

@@ -7,10 +7,13 @@ const RefreshToken = db.refreshToken;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const Availability = require("../models/availability");
+const ObjectId = require('mongoose').Types.ObjectId;
 
 exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
+    image: "picture_default.png",
+    style: ObjectId("620b603b4f1af9b8fbfc65e0"),
     email: req.body.email,
     name: req.body.name,
     password: bcrypt.hashSync(req.body.password, 8)

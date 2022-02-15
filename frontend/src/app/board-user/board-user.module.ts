@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeComponent } from './home.component';
+import { BoardUserComponent } from './board-user.component';
 import { UpdateStatusModule } from '../shared/update-status/update-status.module';
 import { PersonCardModule } from '../shared/person-card/person-card.module';
 import { RouterModule } from '@angular/router';
 
 const route = [
-  {path: '', component: HomeComponent
-  }
+  {path: '', children: [
+    {path: '', component: BoardUserComponent},
+  ]}
 ]
 
 @NgModule({
   declarations: [
-    HomeComponent],
+    BoardUserComponent
+  ],
   imports: [
-    CommonModule, PersonCardModule, UpdateStatusModule, RouterModule.forChild(route)
+    CommonModule, UpdateStatusModule, PersonCardModule, RouterModule.forChild(route)
   ]
 })
-export class HomeModule { }
+export class BoardUserModule { }

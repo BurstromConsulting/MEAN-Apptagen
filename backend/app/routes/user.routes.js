@@ -12,12 +12,22 @@ module.exports = function(app, socketio) {
 
   app.get("/api/user/all", controller.allAccess);
 
-  app.get("/api/board/user", [authJwt.verifyToken], controller.userBoard);
+  // app.post("/api/board/user/card", [authJwt.verifyToken], controller.userCard);
 
   app.get("/api/user/:id", controller.findUserById);
 
+  app.post("/api/user/list", controller.findUsersByList);
+
   app.put("/api/user/:id/status", (req, res) => {
     controller.updateStatus(req, res, socketio);
+  });
+
+  app.put("/api/user/:id/style", (req, res) => {
+    controller.updateStyle(req, res, socketio);
+  });
+
+  app.put("/api/user/:id/image", (req, res) => {
+    controller.updateImage(req, res, socketio);
   });
 
   app.get(
@@ -31,4 +41,9 @@ module.exports = function(app, socketio) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+  app.get(
+    "/api/token",
+    [authJwt.verifyToken],
+    controller.tokenCheck
+    );
 };

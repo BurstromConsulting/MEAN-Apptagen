@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 //import { PersonModule } from './person/person.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BoardModeratorComponent } from './board-moderator/board-moderator.component';
 import { BoardUserComponent } from './board-user/board-user.component';
@@ -24,14 +23,13 @@ import { AuthService } from './_services/auth.service';
 import { SocketService } from './_services/socket.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { StorageService } from './_services/storage.service';
+import { ConfigService } from './_services/config.service';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent,
     BoardModeratorComponent,
-    BoardUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +41,7 @@ import { StorageService } from './_services/storage.service';
     ReactiveFormsModule,
     MatDialogModule,
   ],
-  providers: [UserService, AuthService, SocketService, authInterceptorProviders, StorageService],
+  providers: [UserService, AuthService, SocketService, authInterceptorProviders, StorageService, ConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

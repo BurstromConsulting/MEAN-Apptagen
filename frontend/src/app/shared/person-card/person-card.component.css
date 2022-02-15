@@ -2,6 +2,23 @@ mat-card-title {
     justify-content: start;
     display: flex;
 }
+mat-card-subtitle {
+    color: black;
+}
 mat-card-title > app-status-icon{
     margin-right: 10px;  
+}
+
+.example-header-image {
+    /* background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg'); */
+    background-size: cover;
+    outline: 5px solid;
+    width: 100px;
+    height: 100px;
+}
+
+mat-card {
+    background-position: center;
+    /* background-image: url('http://localhost:8080/images/card-background/background1.jpg'); */
+
 }

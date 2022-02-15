@@ -18,30 +18,47 @@ export class UserService extends DataService{
     return this.get(`${PATH_URL}all`);
   }
 
-  getUserBoard(): Observable<any> {
+  getUserCard(filename: string): Observable<any> {
     
-    return this.get('board/user');
+    return this.post(`board/${PATH_URL}card`, filename);
   }
   
   getUserById(id: string): Observable<any> {
     
     return this.get(`${PATH_URL}${id}`);
   }
+  
+  getUserByIdArray(id: string[]): Observable<any> {
+    const body = {
+      idList: id
+    }
+    return this.post(`${PATH_URL}list`, body);
+  }
+
+  updateStyle(styleId: any, userId: string): Observable<any> {
+    return this.put(`${PATH_URL}${userId}/style`, styleId);
+  }
 
   getModeratorBoard(): Observable<any> {
-    
     return this.get('board/mod');
   }
 
   getAdminBoard(): Observable<any> {
-    
     return this.get('board/admin');
   }
   getAvailabilities(): Observable<any> {
     return this.get('status/all');
   }
+  verifyToken(): Observable<any> {
+    return this.get('token');
+  }
 
   updatePersonStatus(userId: string, availabilityId: string, message: string): Observable<any> {
-    return this.put(`${PATH_URL}${userId}/status`);
+    const body = {
+      userId: userId,
+      availabilityId: availabilityId,
+      message: message
+    };
+    return this.put(`${PATH_URL}${body.userId}/status`, body);
   }
 }

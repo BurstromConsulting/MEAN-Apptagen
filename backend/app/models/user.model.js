@@ -24,7 +24,13 @@ const User = mongoose.model(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Role"
             }
-        ]
+        ],
+        style: 
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Style"
+        },
+        image: String
     })
 );
 

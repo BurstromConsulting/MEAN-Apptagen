@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { take } from 'rxjs';
+import { ConfigService } from '../_services/config.service';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -13,18 +16,20 @@ export class BoardAdminComponent implements OnInit {
   isLoggedIn = false;
   username = '';
 
-  constructor(private userService: UserService) { }
+
+  constructor(private router:Router, private userService: UserService, public configService: ConfigService) { }
 
   logout(): void{}
 
   ngOnInit(): void {
-    this.userService.getAdminBoard().subscribe({
-      next: data => {
-        this.content = data;
-      },
-      error: err => {
-        this.content = JSON.parse(err.error).message;
-      }
-    });
+  }
+
+  remove(configId: string): void {
+    this.configService.deleteConfig(configId);
+  }
+  navigateTo(path: string) { 
+    this.router.navigate(['admin', path])
+    //console.log(path);
+    
   }
 }

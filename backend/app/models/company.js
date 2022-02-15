@@ -5,6 +5,8 @@ const Company = mongoose.model(
     new mongoose.Schema({
         name: String,
         location: String,
+        fontColor: String,
+        image: String,
     })
 )
 module.exports = Company;

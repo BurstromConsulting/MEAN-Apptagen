@@ -1,0 +1,39 @@
+<div class="device-layout">
+    <div class="device-list-view">
+        <h4>Available Devices:</h4>
+        <mat-list #device>
+        <mat-list-item  (click)="currentDevice(device)" *ngFor="let device of allDevices" [ngClass]="{selected: device.uuid === selectedDevice.uuid}" class="input">
+            {{device.name}}
+        </mat-list-item>
+        </mat-list>
+    </div>
+
+    <div *ngIf="!!selectedDevice">
+        <div class="device-option-views">
+            <h3>Input Device Location and Name:</h3>
+            <div class="example-button-row">
+                <mat-form-field>
+                    <input matInput placeholder="Input Device Location" [(ngModel)]="selectedDevice.location">
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                    <input matInput placeholder="Input Device Name" [(ngModel)]="selectedDevice.name">
+                </mat-form-field>
+            </div>
+        
+            <h4>Config Selection:</h4>
+            <mat-form-field appearance="fill">
+                <mat-label>Config</mat-label>
+                <mat-select (selectionChange)="selected($event)" [formControl]="configControl">
+                    <mat-option *ngFor="let config of availableConfigs" [value]="config">
+                    {{config.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <button class="admin-button" mat-raised-button (click)="updateDevice()">Update Device</button>
+            <br>
+            <button class="admin-button" mat-raised-button (click)="deleteDevice()" color="warn">Delete Device</button>
+        </div>
+    </div>
+</div>

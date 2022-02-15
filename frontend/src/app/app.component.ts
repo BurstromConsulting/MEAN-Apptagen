@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Person } from './person';
 import { StorageService } from './_services/storage.service';
 import { TokenStorageService } from './_services/token-storage.service';
-import * as uuid from 'uuid';
+import { ConfigService } from './_services/config.service';
 
 
 @Component({
@@ -15,6 +15,7 @@ import * as uuid from 'uuid';
 })
 export class AppComponent implements OnInit{
   private roles: string[] = [];
+  private configList: string[] = [];
   isLoggedIn = false;
   showAdminBoard = false;
   showModeratorBoard = false;
@@ -23,17 +24,16 @@ export class AppComponent implements OnInit{
   title = 'MEAN-Apptagen';
   id!: number;
   person!:Person;
-  cookie!: any;
-
+  config!: any;
+  showToolbar = true;
 
   
-  constructor(private router:Router, private tokenStorageService: TokenStorageService, private localStorageService: StorageService){
+  constructor(public router:Router, private tokenStorageService: TokenStorageService, private localStorageService: StorageService, private configService: ConfigService){
 
   }
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
-    if(!this.kioskView){
 
       if (this.isLoggedIn) {
         const user = this.tokenStorageService.getUser();
@@ -44,10 +44,12 @@ export class AppComponent implements OnInit{
 
         this.username = user.username;
       }
-    }
-    this.localStorageService.setUuid(uuid.v4());
-    
-
+      this.router.events.subscribe((event)=>{
+        if(event instanceof NavigationEnd){
+          this.showToolbar = !(event.urlAfterRedirects === '/kiosk');
+        }
+      })
+    //console.log("Here");
   }
 
 

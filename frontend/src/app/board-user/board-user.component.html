@@ -1,1 +1,8 @@
-<p>board-user works!</p>
+<div *ngIf="!!user">
+    <div class="status-button">
+        <app-update-status [status]="user.status" [user]="user" (updatedStatus)="update($event)">
+        </app-update-status>
+    </div>
+    <app-person-card [person]="user">
+    </app-person-card>
+</div>
