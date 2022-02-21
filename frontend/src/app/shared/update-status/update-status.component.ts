@@ -43,7 +43,7 @@ export class UpdateStatusComponent implements OnInit {
   ngOnInit(): void {
   }
   openDialog(): void {
-    const statusOptions = this.dialog.open(StatusDialogComponent, {restoreFocus: false, data: this.status, width: '50%', height: '40%'});
+    const statusOptions = this.dialog.open(StatusDialogComponent, {restoreFocus: false, data: {status: this.status, user: this.user}, width: '50%', height: '40%'});
 
     statusOptions.afterClosed().pipe(take(1)).subscribe((data: Status) => {
       if(!!data){

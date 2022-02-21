@@ -41,25 +41,7 @@
       </mat-autocomplete>
       <mat-label>Users to choose from</mat-label>
     </mat-form-field>
+    <br>
+    <button class="admin-button" *ngIf="!selectedConfig.new" mat-raised-button (click)="deleteConfig()" color="warn">Delete Config</button>
   </div>
-  <!-- <div *ngIf="!!selectedDevice"> -->
-    <!-- <div class="">Input Device Name:
-      <div class="example-button-row">
-        <mat-form-field>
-          <input matInput placeholder="Ex. Aurorum Device 1" [(ngModel)]="selectedDevice.name">
-        </mat-form-field>
-        <br>
-        <button class="admin-button" mat-raised-button (click)="updateDevice()">Update Device</button>
-        <br>
-        <button class="admin-button" mat-raised-button (click)="deleteDevice()" color="warn">Delete Device</button>
-      </div>
-    </div> -->
-    <!-- <div class="device-list-view">
-      <mat-selection-list #device [multiple]="false" (selectionChange)="currentDevice($event)">
-        <mat-list-option *ngFor="let device of allDevices" [value]="device">
-          {{device.name}}
-        </mat-list-option>
-      </mat-selection-list>
-    </div> -->
-  <!-- </div> -->
 </div>

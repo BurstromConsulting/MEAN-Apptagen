@@ -2,38 +2,66 @@
     <div class="user-list-view">
         <h4>All Users:</h4>
         <mat-list #user>
-        <mat-list-item  (click)="currentUser(user)" *ngFor="let user of allUsers" [ngClass]="{selected: user._id === selectedUser._id}" class="input">
-            {{user.name}}
-        </mat-list-item>
+            <mat-list-item (click)="currentUser(user)" *ngFor="let user of allUsers"
+                [ngClass]="{selected: user._id === selectedUser._id}" class="input">
+                {{user.name}}
+            </mat-list-item>
         </mat-list>
     </div>
 
     <div *ngIf="!!selectedUser">
+        <app-person-card #previewCard (pictureClick)="uploadPicture.click()" [editMode]="true"
+            [person]="this.selectedUser"></app-person-card>
         <div class="user-option-views">
             <h3>Input User Image and Company:</h3>
-            <div class="example-button-row">
-                <mat-form-field>
-                    <input matInput placeholder="Input User Image" [(ngModel)]="selectedUser.image">
-                </mat-form-field>
-                <br>
-                <mat-form-field>
-                    <input matInput placeholder="Input Company Name" [(ngModel)]="selectedUser.company">
-                </mat-form-field>
+            <div class="upload-container">
+
+                <div class="example-button-row upload-child">
+                    <mat-form-field hidden="true">
+                        <input matInput [formControl]="imageControl"  placeholder="Profile Picture" readonly />
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <input matInput placeholder="Input Company Name" [(ngModel)]="selectedUser.company">
+                    </mat-form-field>
+                </div>
+
+                <div class="file-upload-buttons  upload-child">
+
+                    <button class="admin-button" mat-raised-button (click)="uploadPicture.click()">Upload Profile
+                        Picture</button>
+                    <input enctype="multipart/form-data" #uploadPicture hidden="true" type="file"
+                        (change)="onProfileChange($event)" />
+                    <br>
+
+                </div>
             </div>
-        
             <h4>Style Selection:</h4>
-            <mat-form-field appearance="fill">
-                <mat-label>Style</mat-label>
-                <mat-select (selectionChange)="selected($event)" [formControl]="styleControl">
-                    <mat-option *ngFor="let style of availableStyles" [value]="style">
-                    {{style.name}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <br>
-            <button class="admin-button" mat-raised-button (click)="updateUser()">Update Style</button>
-            <br>
-            <!-- <button class="admin-button" mat-raised-button (click)="deleteDevice()" color="warn">Delete Device</button> -->
+            <div class="upload-container">
+                <div class="file-upload-buttons upload-child">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Style</mat-label>
+                        <mat-select (selectionChange)="selected($event)" [formControl]="styleControl">
+                            <mat-option *ngFor="let style of availableStyles" [value]="style">
+                                {{style.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <br>
+                    <button class="admin-button" mat-raised-button (click)="updateUser()">Update Style</button>
+                    <br>
+                </div>
+                <div class="file-upload-buttons upload-child">
+                    <mat-form-field>
+                        <input matInput placeholder="New Background Name" [(ngModel)]="newStyleName"/>
+                    </mat-form-field>
+                    <br>
+                    <button class="admin-button" mat-raised-button (click)="uploadBackground.click()">Upload New
+                        Background</button>
+                    <input enctype="multipart/form-data" #uploadBackground hidden="true" type="file"
+                        (change)="onUploadedBackground($event)" />
+                </div>
+            </div>
         </div>
     </div>
 </div>

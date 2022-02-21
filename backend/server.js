@@ -1,5 +1,23 @@
 const express = require("express");
 const cors = require("cors");
+const multer = require('multer');
+const crypto = require('crypto');
+var storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        // console.log(req, file);
+        let location = req.url.split("/").pop();
+        callback(null, './files/images/'+location);    
+     }, 
+     filename: function (req, file, callback) { 
+        const hashName = crypto.randomBytes(20).toString('hex');
+        const fileName = hashName+'.'+file.originalname.split(".").pop();
+        callback(null , fileName);   
+     }
+});
+const upload = multer({
+    storage: storage,
+    limits : {fileSize : 10000000}
+});
 
 const app = express();
 
@@ -14,9 +32,10 @@ const Role = db.role;
 const Availability = db.availability;
 
 app.use(cors(corsOption));
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.json({limit: '20mb'}));
+app.use(express.urlencoded({limit: '20mb', extended: true}));
 app.use(express.static("files"));
+// app.use(upload.any());
 
 // routes
 app.get("/", (req, res) => {
@@ -34,10 +53,10 @@ const server = app.listen(PORT, () => {
 })
 
 const socketio = require('./app/websocket/serversocket')(server);
-require('./app/routes/user.routes')(app, socketio);
+require('./app/routes/user.routes')(app, socketio, upload);
 require('./app/routes/device.routes')(app, socketio);
 require('./app/routes/config.routes')(app, socketio);
-require('./app/routes/style.routes')(app, socketio);
+require('./app/routes/style.routes')(app, socketio, upload);
 db.mongoose
 .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
         useNewUrlParser: true,

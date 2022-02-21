@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { take } from 'rxjs';
-import { Availability, Status } from 'src/app/person';
+import { Availability, Person, Status } from 'src/app/person';
 import { UserService } from 'src/app/_services/user.service';
 
 @Component({
@@ -11,10 +11,11 @@ import { UserService } from 'src/app/_services/user.service';
 })
 export class StatusDialogComponent implements OnInit {
   availabilities?: Availability[];
-
+  currentUser: Person;
   status: Status;
-  constructor(public dialogRef: MatDialogRef<StatusDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: Status, private userService: UserService){
-    this.status = data;
+  constructor(public dialogRef: MatDialogRef<StatusDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any, private userService: UserService){
+    this.status = data.status;
+    this.currentUser = data.user;
   }
   
 

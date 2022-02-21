@@ -39,6 +39,9 @@ export class DeviceViewComponent implements OnInit {
       this.deviceService.getAllDevices()
     ]).pipe(take(1)).subscribe(([configs, devices]) => {
       //console.log(devices, configs);
+      
+      devices.sort((a: any,b: any) => a.name.localeCompare(b.name));
+      configs.sort((a: any,b: any) => a.name.localeCompare(b.name));
       this.allDevices = devices;
       this.availableConfigs = configs;
       this.availableConfigs.push(this.nullConfig);

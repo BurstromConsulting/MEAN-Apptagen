@@ -2,12 +2,16 @@
 
     <p-carousel [value]="userdata" [numVisible]="1" [numScroll]="1" [autoplayInterval]="5000" [circular]="userdata.length>1" [showNavigators]="false" [showIndicators]="false" orientation="vertical">
         <ng-template let-user pTemplate="item">
-            <app-person-card [person]="user">
+            <app-person-card #appCard [person]="user">
             </app-person-card>
         </ng-template>
     </p-carousel>
 </div>
 
 <ng-template #noConfig>
-    <span>No config has been set, please wait while admin assigns you a configuration</span>
+    <span>
+        No config has been set, please wait while admin assigns you a configuration
+        <br>
+        This is Device: {{uuid}}
+    </span>
 </ng-template>

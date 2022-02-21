@@ -20,15 +20,16 @@ exports.findUserById = (req, res) => {
   }).select('-password').populate("status.availability style");
 };
 exports.findUsersByList = (req, res) => {
-  console.log(req.body.idList);
+  // console.log("IdList:",req.body.idList);
   User.find({
     '_id': {
-      $in: req.body.idList.map((user) => ObjectId(user._id))
+      $in: req.body.idList.map((id) => ObjectId(id))
     }
   }, (err, result) => {
-    if(err){
-      res.status(500).send({message: err});
+    if (err) {
+      res.status(500).send({ message: err });
     }
+    // console.log(result);
     res.status(200).send(result);
   }).populate({ path: 'status.availability style', select: '-__v' }).select('-password -__v');
 };
@@ -86,11 +87,10 @@ exports.updateCompany = (req, res, socketio) => {
   })
 }
 exports.updateStyle = (req, res, socketio) => {
-  const style = {
-    style: ObjectId(req.body.style._id)
-  }
-  console.log(req.body);
-  User.updateOne({ _id: req.params.id }, style, (err, result) => {
+
+
+  // console.log(req.body);
+  User.updateOne({ _id: req.params.id }, { style: ObjectId(req.body.styleId) }, (err, result) => {
     User.findById(req.params.id, (erro, resp) => {
       if (erro) {
         res.status(500).send({ message: erro });
@@ -111,8 +111,48 @@ exports.updateStyle = (req, res, socketio) => {
               element.users.forEach(user => {
                 // console.log(user);
                 if (user._id == req.params.id) {
+                  // console.log("Controller:",user);
+                  // Problemet ligger här med Emits av Style ändringar
+                  console.log("Controller:",element);
+                  socketio.custom.broadcastConfig(element);
+                }
+              })
+            })
+          }
+        }).populate({ path: 'users', select: '-password -__v' }).select('-__v');
+        //To Here.
+        console.log(resp);
+        res.status(200).send(resp);
+      }
+    }).select('-password').populate("status.availability style").populate("roles");
+  })
+}
+
+exports.updateImage = (req, res, socketio, dataToUpdate) => {
+  // console.log(req.body);
+  User.updateOne({ _id: req.params.id }, dataToUpdate, (err, result) => {
+    User.findById(req.params.id, (erro, resp) => {
+      if (erro) {
+        res.status(500).send({ message: erro });
+      }
+      else {
+        // console.log("else 1");
+        // TO-DO: Re-write this section as a Websocket event for a "image/updated"-event
+        //From Here:
+        Config.find((err, result) => {
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          }
+          else {
+            // console.log("else 2");
+            result.forEach(element => {
+              // console.log(element);
+              element.users.forEach(user => {
+                // console.log(user);
+                if (user._id == req.params.id) {
                   // console.log(user);
-                  console.log(element);
+                  // console.log(element);
                   socketio.custom.broadcastConfig(element);
                 }
               })
@@ -131,30 +171,7 @@ exports.updateStyle = (req, res, socketio) => {
       //   personId: req.params.id})
       // })
       //console.log(err, result);
-    }).select('-password').populate("status.availability style").populate("roles");
-  })
-}
-
-exports.updateImage = (req, res, socketio) => {
-  console.log(req.body);
-  User.updateOne({ _id: req.params.id }, { image: req.body.image }, (err, result) => {
-    User.findById(req.params.id, (erro, resp) => {
-      if (erro) {
-        res.status(500).send({ message: erro });
-      }
-      else {
-        res.status(200).send(resp);
-      }
-      // socketio.custom.broadcastStatus({
-      //   status: {
-      //     message: req.body.message,
-      //     availability: resp,
-
-      //   },
-      //   personId: req.params.id})
-      // })
-      //console.log(err, result);
-    }).select('-password').populate("status.availability style").populate("roles");
+    }).select('-password').populate("status.availability style roles");
   })
 }
 

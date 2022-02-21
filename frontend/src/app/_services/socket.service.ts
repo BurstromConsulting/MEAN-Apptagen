@@ -33,7 +33,7 @@ export class SocketService {
         this.statusUpdate.next(data);
       })
       this.socket.on("config/update", (data) => {
-        console.log(data);
+        // console.log(data);
         this.configUpdate.next(data);
       })
     })

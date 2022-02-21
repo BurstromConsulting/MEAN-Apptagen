@@ -22,25 +22,38 @@ section {
   font-size: 14px;
   margin-left: 8px;
   min-width: 120px;
-  align-content: left;
+  align-content: center;
 }
 .example-chip-list {
   margin-top: 20px;
 }
+.upload-container {
+  display: flex;
+  flex-direction: row;
+}
+.upload-child {
+  display: flex;
+  flex-direction: column;
+}
 .example-button-row {
+  align-content:center;
   width: 300px;
   margin: 10px;
 }
 
-.admin-button{
-  margin-top: 15px;
-}
+
 
 .style-list {
-display: table-column-group;
-float: left;
-margin-left: 9px;
-margin-top: 9px;
-margin-right: 9px;
-margin-bottom: 9px;
-}
+  display: table-column-group;
+  float: left;
+  margin-left: 9px;
+  margin-top: 9px;
+  margin-right: 9px;
+  margin-bottom: 9px;
+  }
+  .file-upload-buttons {
+    margin-left: 9px;
+    margin-top: 9px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    }

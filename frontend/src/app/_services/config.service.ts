@@ -16,8 +16,8 @@ export class ConfigService extends DataService{
     super(http);
    }
 
-  public deleteConfig(config: string): Observable<any>{
-    return this.delete(`${PATH_URL}${config}`);
+  public deleteConfig(configId: string): Observable<any>{
+    return this.delete(`${PATH_URL}${configId}`);
   }
 
   public getAllConfigs(): Observable<any>{

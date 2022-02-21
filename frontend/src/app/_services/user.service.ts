@@ -29,14 +29,19 @@ export class UserService extends DataService{
   }
   
   getUserByIdArray(id: string[]): Observable<any> {
+    console.log("GetUsers: ",id);
     const body = {
       idList: id
     }
     return this.post(`${PATH_URL}list`, body);
   }
 
-  updateStyle(styleId: any, userId: string): Observable<any> {
-    return this.put(`${PATH_URL}${userId}/style`, styleId);
+  updateStyle(styleId: string, userId: string): Observable<any> {
+    // console.log(styleId);
+    const body = {
+      styleId: styleId
+    }
+    return this.put(`${PATH_URL}${userId}/style`, body);
   }
 
   getModeratorBoard(): Observable<any> {
@@ -51,6 +56,10 @@ export class UserService extends DataService{
   }
   verifyToken(): Observable<any> {
     return this.get('token');
+  }
+
+  updateImage(body: any, userId: string): Observable<any> {
+    return this.post(`${PATH_URL}${userId}/profile`, body, {contentType: "multipart/form-data"});
   }
 
   updatePersonStatus(userId: string, availabilityId: string, message: string): Observable<any> {

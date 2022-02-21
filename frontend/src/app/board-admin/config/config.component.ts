@@ -1,12 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, take, interval, merge, forkJoin  } from 'rxjs';
+import { Observable, take, interval, merge, forkJoin } from 'rxjs';
 import { Person } from 'src/app/person';
 import { UserService } from 'src/app/_services/user.service';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {map, startWith} from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { map, startWith } from 'rxjs/operators';
 import { ConfigService } from 'src/app/_services/config.service';
 import { MatSelectionListChange } from '@angular/material/list';
 import { DeviceService } from 'src/app/_services/device.service';
@@ -36,13 +36,13 @@ export class ConfigComponent implements OnInit {
   allDevices: any = [];
   selectedDevice: any;
   newConfigs: any = [];
-  
+
   @ViewChild('personInput') personInput!: ElementRef<HTMLInputElement>;
   constructor(private userService: UserService, public configService: ConfigService, public deviceService: DeviceService) {
 
     this.filteredPersons = this.configCtrl.valueChanges.pipe(
       startWith(null),
-      map((input: any | null) => ((!!input && !input.name ) ? this._filter(input) : this.availablePersons.slice())),
+      map((input: any | null) => ((!!input && !input.name) ? this._filter(input) : this.availablePersons.slice())),
     );
   }
 
@@ -51,7 +51,11 @@ export class ConfigComponent implements OnInit {
       this.userService.getPublicContent(),
       this.configService.getAllConfigs(),
       this.deviceService.getAllDevices()
-    ]).pipe(take(1)).subscribe(([users,configs, devices]) => {
+    ]).pipe(take(1)).subscribe(([users, configs, devices]) => {
+
+      devices.sort((a: any, b: any) => a.name.localeCompare(b.name));
+      configs.sort((a: any, b: any) => a.name.localeCompare(b.name));
+      users.sort((a: any, b: any) => a.name.localeCompare(b.name));
       this.availablePersons = users;
       this.allDevices = devices;
       //console.log(users, configs);
@@ -63,7 +67,8 @@ export class ConfigComponent implements OnInit {
 
   sendConfig(): void {
     if (!!this.selectedConfig.new) {
-      this.configService.createConfig(this.selectedConfig).pipe(take(1)).subscribe( (data) => {
+      this.selectedConfig.new = false;
+      this.configService.createConfig(this.selectedConfig).pipe(take(1)).subscribe((data) => {
         //console.log("Config Created");
         removeElement(this.newConfigs, data);
         this.selectedConfig._id = data._id;
@@ -71,23 +76,23 @@ export class ConfigComponent implements OnInit {
       })
     }
     else {
-      this.configService.updateConfig(this.selectedConfig).pipe(take(1)).subscribe( () =>{
+      this.configService.updateConfig(this.selectedConfig).pipe(take(1)).subscribe(() => {
         //console.log("Config updated");
-    
+
       });
     }
   }
 
 
-  onConfigChange(config: any){
+  onConfigChange(config: any) {
     // //console.log(e.options[0].value); 
     this.selectedConfig = config;
   }
-  
-  newConfig(): void{
-  const newconfig = {_id: this.newConfigs.length , name: `New Config ${this.newConfigs.length}`, users: [], new: true};
-  this.newConfigs.push(newconfig);
-  this.selectedConfig = newconfig;
+
+  newConfig(): void {
+    const newconfig = { _id: this.newConfigs.length, name: `New Config ${this.newConfigs.length}`, users: [], new: true };
+    this.newConfigs.push(newconfig);
+    this.selectedConfig = newconfig;
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -98,7 +103,18 @@ export class ConfigComponent implements OnInit {
 
 
   remove(person: Person): void {
-      removeElement(this.selectedConfig.users, person);
+    removeElement(this.selectedConfig.users, person);
+  }
+
+  deleteConfig(): void {
+    if (!!this.selectedConfig.new) {
+      removeElement(this.availableConfigs, this.selectedConfig);
+    } else {
+      this.configService.deleteConfig(this.selectedConfig._id).pipe(take(1)).subscribe(() => {
+        //console.log("Device Deleted");
+        removeElement(this.availableConfigs, this.selectedConfig);
+      });
+    }
   }
 
   private _filter(personName: string): Person[] {

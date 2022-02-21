@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { PersonCardModule } from 'src/app/shared/person-card/person-card.module';
 
 const route = [
   {
@@ -24,7 +25,7 @@ const route = [
   imports: [
     CommonModule, MatChipsModule, MatAutocompleteModule, ReactiveFormsModule,
     MatIconModule, FormsModule, MatInputModule, RouterModule.forChild(route),
-     MatListModule, MatButtonModule, MatSelectModule
+     MatListModule, MatButtonModule, MatSelectModule, PersonCardModule
   ]
 })
 export class StyleViewModule { }

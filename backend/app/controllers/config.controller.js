@@ -27,7 +27,7 @@ exports.updateConfig = (req, res, socketio) => {
         }
         else {
             Config.findOne({_id: req.params.id}, (errr, resp) => {
-                // console.log(resp);
+                console.log("update config",resp);
                 res.send(resp);
                 socketio.custom.broadcastConfig(resp);
             }).select('-__v');
@@ -60,7 +60,7 @@ exports.createConfig = (req, res) => {
 };
 
 exports.deleteConfig = (req, res) => {
-    Config.deleteOne({ name: req.body.name }, (err, result) => {
+    Config.deleteOne({ _id: req.params.id }, (err, result) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
