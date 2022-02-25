@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.2.
 
-## Table of Content
+# Table of Content
     * [Introduction](#introduction)
     * [Kiosk/End Point View](#kioskend-point-view)
     * [Admin Functions](#admin-functions)
