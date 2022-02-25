@@ -10,6 +10,7 @@ const Availability = require("../models/availability");
 const ObjectId = require('mongoose').Types.ObjectId;
 
 exports.signup = (req, res) => {
+  // The standard User Signup form, hardcoded initial style and image and Password Hash.
   const user = new User({
     username: req.body.username,
     image: "picture_default.png",
@@ -19,12 +20,13 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8)
   });
 
+  // Saves User to Database from Input of the Signup Form
   user.save((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
-
+    // Checks if Request includes Roles for said user, e.g making a Admin User would need to have this field included to not default to ROLE_USER
     if (req.body.roles) {
       Role.find(
         {
@@ -70,7 +72,7 @@ exports.signup = (req, res) => {
     }
   });
 };
-
+  // 
   exports.signin = (req, res) => {
     User.findOne({
       username: req.body.username

@@ -27,6 +27,10 @@ export class StyleService extends DataService{
     
     return this.post(`${PATH_URL}create`, body);
   }
+  saveStyle(body: any): Observable<any> {
+    console.log(body);
+    return this.post(`${PATH_URL}background`, body, {contentType: "multipart/form-data"});
+  }
   
   updateStyle(id: string, body: any): Observable<any> {
     

@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  // Simple register component, for a new user being created, Middleware being called on the request testing input data to be without conflicts
   onSubmit(): void {
     const { username, email, name, password } = this.form;
 

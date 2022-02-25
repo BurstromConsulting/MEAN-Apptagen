@@ -15,7 +15,7 @@ const route = [
     KioskComponent
   ],
   imports: [
-    CommonModule, PersonCardModule, RouterModule.forChild(route), CarouselModule
+    CommonModule, PersonCardModule, RouterModule.forChild(route), CarouselModule,
   ]
 })
 export class KioskModule { }

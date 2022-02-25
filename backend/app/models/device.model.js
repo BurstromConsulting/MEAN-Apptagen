@@ -6,6 +6,10 @@ const Device = mongoose.model(
         uuid: String,
         name: String,
         location: String,
+        refreshInterval: {
+            type: Number,
+            default: 3600
+        },
         config:
             {
                 type: mongoose.Schema.Types.ObjectId,

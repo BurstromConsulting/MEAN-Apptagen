@@ -2,6 +2,8 @@ const db = require("../models");
 const ROLES = db.ROLES;
 const User = db.user;
 
+//Middleware to Confirm no duplicate of non-existen roles were submitted during signup
+
 checkDuplicateUsernameOrEmail = (req, res, next) => {
     //Username
     User.findOne({

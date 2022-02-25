@@ -1,6 +1,6 @@
 {
   "name": "mean-apptagen",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -21,7 +21,6 @@
     "@angular/router": "~13.1.0",
     "@types/socket.io": "^3.0.2",
     "@types/socket.io-client": "^3.0.0",
-    "keen-slider": "^6.6.3",
     "postman-collection": "^4.1.1",
     "primeicons": "^5.0.0",
     "primeng": "^13.1.1",

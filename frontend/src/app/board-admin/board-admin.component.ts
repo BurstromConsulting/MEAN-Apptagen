@@ -17,19 +17,15 @@ export class BoardAdminComponent implements OnInit {
   username = '';
 
 
-  constructor(private router:Router, private userService: UserService, public configService: ConfigService) { }
+  constructor(private router:Router) { }
 
   logout(): void{}
 
   ngOnInit(): void {
   }
 
-  remove(configId: string): void {
-    this.configService.deleteConfig(configId);
-  }
   navigateTo(path: string) { 
     this.router.navigate(['admin', path])
-    //console.log(path);
     
   }
 }

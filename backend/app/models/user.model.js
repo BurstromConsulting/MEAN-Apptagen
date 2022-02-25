@@ -34,6 +34,6 @@ const User = mongoose.model(
     })
 );
 
-User.findAllUsers = async () => {return await User.find().select('-password').populate("status.availability")};
+User.findAllUsers = async () => {return await User.find().select('-password').populate("status.availability style")};
 
 module.exports = User;

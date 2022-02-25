@@ -10,6 +10,8 @@ module.exports = function(app) {
     next();
   });
 
+// Authentication for UserSignup, with Middlewares checking validity
+
   app.post(
     "/api/auth/signup",
     [
@@ -19,6 +21,9 @@ module.exports = function(app) {
     controller.signup
   );
   
+    // Authentication call for user sign-in
   app.post("/api/auth/signin", controller.signin);
+  
+  // Refreshes user's token  if they remain active on the website so that they stay logged-in.
   app.post("/api/auth/refreshtoken", controller.refreshToken);
 };

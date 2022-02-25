@@ -1,10 +1,8 @@
 <div id="app">
+  <!-- This section determines what links will be shown on the navigational bar on the Front end -->
     <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="showToolbar">
       <a routerLink="" class="navbar-brand">Apptagen</a>
       <ul class="navbar-nav mr-auto" routerLinkActive="active">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="home">Home </a>
-        </li>
         <li class="nav-item" *ngIf="showAdminBoard">
           <a class="nav-link" routerLink="admin">Admin Board</a>
         </li>
@@ -36,6 +34,6 @@
     </nav>
   
     <div class="content">
-      <router-outlet></router-outlet>
+      <router-outlet class="content"></router-outlet>
     </div>
   </div>

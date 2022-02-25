@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
       this.roles = this.tokenStorage.getUser().roles;
     }
   }
-
+// Simple onSubmit form functionality, calling Auth Service to confirm that user exists and retrieve their associated roles.
   onSubmit(): void {
     const { username, password } = this.form;
 
@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  // Reloads the current page and then retrieves the Users roles after they've logged in.
   reloadPage(): void {
     window.location.reload();
   }

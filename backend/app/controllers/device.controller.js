@@ -4,23 +4,25 @@ const Device = db.device;
 const Config = db.config;
 const ObjectId = require('mongoose').Types.ObjectId;
 
+// Device getters for various data needs.
+
 exports.getAllDevices = (req, res) => {
     Device.find((err, result) => {
-        //console.log(result);
       res.status(200).send(result);
     }).populate({ path: 'config', select: '-users -__v' }).select('-__v');
   };
 exports.getDeviceById = (req, res) => {
     Device.findOne({uuid:req.params.id}, (err, result) => {
-        //console.log(err, result, req.params.id);
         res.status(200).send(result);
       }).populate({ path: 'config', select: '-__v' }).select('-__v');
 };
+
+// Updates the Device and assigns a new config to it, then assigns it to the room that belongs to the Room/ConfigID
+
 exports.updateDeviceConfig = (req, res, socketio) => {
     const config = !!req.body.config ? ObjectId(req.body.config._id) : null;
     Device.findOneAndUpdate({uuid: req.params.id}, {name: req.body.device.name, location: req.body.device.location, config: config}, (err, result) => {
         
-        //console.log(result);
         if (err) {
             res.status(500).send({ message: err });
             return;
@@ -28,7 +30,6 @@ exports.updateDeviceConfig = (req, res, socketio) => {
         else{
             if(!!config){
                 Config.findById(config, (errr, resp) =>  {
-                    //console.log("config findy by id ", resp)
                     socketio.custom.configUpdate(req.params.id, resp);
 
                 });
@@ -41,15 +42,15 @@ exports.updateDeviceConfig = (req, res, socketio) => {
     }).populate('config').select('-__v');
 };
 
+// This is being called when a new device UUID connects to the server, to create the device in our database and assign it a name to be referenced in the Device View.
+
 exports.createDevice = (req, res) => {
-    //console.log(req.body);
     const device = new Device({
         uuid: req.body.deviceId,
         name: "New Device: "+req.body.deviceId,
         location: req.body.location
         });
     device.save((err, result) => {
-        //console.log(result);
         if (err) {
             res.status(500).send({ message: err });
             return;
@@ -60,13 +61,14 @@ exports.createDevice = (req, res) => {
     });
 };
 
+// Deletes device from Database.
+
 exports.deleteDevice = (req, res) => {
     Device.deleteOne({uuid: req.params.id},(err, result) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
         }
-        //console.log(result);
         res.status(200).send(result);
     });
 };
