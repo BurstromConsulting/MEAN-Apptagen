@@ -56,7 +56,7 @@ Adjusting devices in real time doesnt happen until the "update device" call happ
 
 ### Editing Styles
 Presenting your organization is an important aspect of day-to-day operations, as such, here's how you can edit and adapt your individual employees profile-card, that will be presented on your End points.
-![Style upload](./github-readme-images/image-upload.gif)
+![Style upload](./github-readme-images/Image-upload.gif)
 Uploading a Background to allow for your company or device to have various styles depending on a person's department, position or company.
 ![Profile picture](./github-readme-images/profile-picture-upload.gif)
 When you're on-site and looking for a certain individual, knowing what they look like is important, so we've offered to have these people upload a profile picture so that you can see what they look like when you're trying to see if they're available.
