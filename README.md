@@ -13,6 +13,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     * [Sign-up/Sign-in](#sign-upsign-in)
     * [User Functionality](#user-functionality)
     
+<!-- * [License](#license) -->
+    
 ## Introduction
 The Apptagen-project is about present individuals at a physical location in a digital format, allowing for a user to specify to anyone trying to reach them on-site, what their current availability is.
 e.g If you're in an office building that recieves people or you're working at a large company. You can log into the apptagen website, set your own status as "Busy, Away, Vacation or Available" and a Custom message, specifying what you're doing.
