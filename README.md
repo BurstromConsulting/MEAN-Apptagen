@@ -78,6 +78,7 @@ Here is what the User's controls look like, showcasing them being able to update
 
 ## Setting the Project up
 This is a MEAN-stack project but other dependencies include:
+    
     - PrimeNG's Carousel
     - Live-server
     - Multer filehandling
