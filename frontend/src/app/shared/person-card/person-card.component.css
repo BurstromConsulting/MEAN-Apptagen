@@ -1,6 +1,5 @@
 mat-card-title {
     justify-content: start;
-    display: flex;
 }
 mat-card-subtitle {
     color: black;
@@ -8,21 +7,31 @@ mat-card-subtitle {
 mat-card-title > app-status-icon{
     margin-right: 10px;  
 }
+mat-card-header {
+    width: 50vmin;
+    height: 50vmin;
+}
 
-.edit-picture:hover{
+mat-card-header > .edit-picture:hover{
     opacity: 80%;
     transition: opacity 0.5s;
 }
 
-.example-header-image {
-    /* background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg'); */
+mat-card-header > .example-header-image {
     background-size: cover;
     outline: 5px solid;
-    width: 100px;
-    height: 100px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 50vmin;
+    height: 50vmin;
 }
 mat-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
     background-position: center;
-    /* background-image: url('http://localhost:8080/images/card-background/background1.jpg'); */
+    background-size: cover;
+    background-repeat: no-repeat;
 
 }

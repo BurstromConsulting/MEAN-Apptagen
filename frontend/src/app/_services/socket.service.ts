@@ -27,16 +27,22 @@ export class SocketService {
   connect(): void {
     this.socket = io(this.URL);
     this.socket.on("connect", () => {
-      //console.log("Client Connected");
-      this.socket.on("status/broadcast", (data) => {
-        //console.log(data)
-        this.statusUpdate.next(data);
-      })
-      this.socket.on("config/update", (data) => {
-        // console.log(data);
-        this.configUpdate.next(data);
-      })
-    })
+      console.log("Client Connected");
+      
+    });
+    this.socket.io.on("reconnect", (data) => {
+      // console.log("reconnect", data);
+      window.location.reload();
+    });
+    this.socket.on("config/update", (data) => {
+      // console.log(data);
+      this.configUpdate.next(data);
+    });
+    this.socket.on("status/broadcast", (data) => {
+      //console.log(data)
+      this.statusUpdate.next(data);
+    });
+    
     
   }
   sendStatusUpdate(status: Status, personId: string): void{

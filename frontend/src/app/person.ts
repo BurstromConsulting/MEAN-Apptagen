@@ -1,3 +1,7 @@
+//General interfaces to define what values a person in the App-person-card could possibly have.
+// This is used to specify types in some classes in the project, but there are multiple implementations currently that use "Any" rather than "Person" in their code.
+
+
 export interface Person {
     id: string;
     _id: string;

@@ -9,6 +9,10 @@ import { UserService } from '../_services/user.service';
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.css']
 })
+
+// Initial representation of what a Person would look like, Kept for future uses of making a "sub-page" for on-click events when you click on a Persons Usercard.
+// Currently not Implemented
+// To-do: Create a sub-page for more information when on click events happen for a Person-card
 export class PersonComponent implements OnInit {
   id!: string;
   person!: Person;

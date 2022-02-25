@@ -2,6 +2,7 @@ import { style } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
+import { Router } from '@angular/router';
 import { forkJoin, take } from 'rxjs';
 import { PersonCardComponent } from 'src/app/shared/person-card/person-card.component';
 import { StyleService } from 'src/app/_services/style.service';
@@ -20,25 +21,31 @@ export class StyleViewComponent implements OnInit {
   };
 
   styleControl = new FormControl();
+  // Image Control is Mostly Depreciated, as it was updated.
+  // To-do: Update how Image selection and Control works for front-end while maintaining current upload functionality.
   imageControl = new FormControl();
   allUsers: any = [];
   allImages: any = [];
   selectedUser: any = null;
   selectedStyle: any;
   availableStyles: any = [];
+  newFontColor?: string;
   newStyleName?: string;
   UserCompany: any = [];
-  constructor(private userService: UserService, public styleService: StyleService, public cdr: ChangeDetectorRef) { }
+  constructor(private userService: UserService, public styleService: StyleService, public cdr: ChangeDetectorRef, private router:Router) { }
 
   ngOnInit(): void {
+    // Promises both services will have run, before we call styles and users for our frontend functions
     forkJoin([
       this.styleService.getAllStyles(),
       this.userService.getPublicContent()
     ]).pipe(take(1)).subscribe(([styles, users]) => {
-      console.log(styles, users);
+      // Sorts recieved data.
       users.sort((a: any, b: any) => a.name.localeCompare(b.name));
       styles.sort((a: any, b: any) => a.name.localeCompare(b.name));
       this.allUsers = users;
+      // Adds the user Images to all images available. Currently not used
+      // To-do: Add functionality to select from images already uploaded or in the database assigned to other users, not just locally through uploading them.
       users.forEach((user: any) => {
         if (!!user.image){
           this.allImages.push(user.image);
@@ -55,19 +62,16 @@ export class StyleViewComponent implements OnInit {
       }
       this.allUsers.forEach((element: any) => {
 
-        //console.log(element);
         if (this.UserCompany.includes(element.company)) {
         }
         else {
           this.UserCompany.push(element.company);
         }
       });
-      //console.log("Device companys", this.devicecompanys);
     })
   }
-
+// Sets the style and image control based off of the Selected User
   currentUser(user: any): void {
-    // console.log("User: ", user);
     this.selectedUser = user;
     if(!!this.selectedUser.style){
       this.styleControl.patchValue(this.availableStyles.filter((style: any) => style._id === this.selectedUser.style._id)[0]);
@@ -79,67 +83,70 @@ export class StyleViewComponent implements OnInit {
   updateUser(): void {
 
     let styleSettings: any = this.nullStyle;
-    // console.log(this.styleControl.value);
     if (this.styleControl.value !== this.nullStyle) {
       styleSettings = this.styleControl.value;
     }
     console.log("update User:",styleSettings._id);
+    // Style updates are being resolved by the backend.
     this.userService.updateStyle(styleSettings._id, this.selectedUser._id).pipe(take(1)).subscribe((response: any) => {
-      //console.log("Device updated");
       this.selectedUser = response;
       this.previewCard.updateBackground();
-      // this.socket.sendConfigUpdate(configSettings, this.selectedDevice.uuid);
     });
   }
+
+  //Adjusts User based values, based off of newly selected user.
   selected(event: MatSelectChange): void {
-    // console.log(event);
     this.selectedUser.style = event.value;
+    this.selectedStyle = event.value;
   }
+  // Depreciated functionality for image viewing
   selectedImage(event: MatSelectChange): void {
-    // console.log(event);
     this.selectedUser.image = event.value;
   }
+
+  //Updates the font of the currently selected style, using a string, once Style has been updated, it refreshes the component to view the changes on admin end.
+  // Devices will update the font color in real time.
+  updateFont(event: any): void{
+    const body = {
+      fontcolor: this.newFontColor
+    }
+    this.styleService.updateStyle(this.selectedStyle._id, body).pipe(take(1)).subscribe((data: any) => {
+      this.availableStyles = data;
+      this.selectedUser.style.fontcolor = body.fontcolor;
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/admin/style']);
+    }); 
+    })
+    
+  }
+  // Uploads new style background image alongside the string for its name, saves it to our backend and makes it available to our style selection list.
   onUploadedBackground(event: any): void {
     const file: File = event.target.files[0];
     if (!!file) {
-      // this.styleService.createStyle().pipe(take(1)).subscribe(() => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        let fileType: any;
-        fileType = file.name.split(".").pop();
-        // let data = reader.result!.slice(payload, reader.result!.toString().length);
-        // // console.log(test);
-        // console.log(fileType);
-        // console.log(reader.result);
         const formData = new FormData();
+        //Appends the File under the File attribute to our form data and the name of our new style under the name attribute.
         formData.append('file', file);
         formData.append('name', this.newStyleName!);
-        console.log(formData.get('file'));
         this.styleService.saveStyle(formData).pipe(take(1)).subscribe((data: any) => {
           this.availableStyles = data;
-          // console.log(data);
         })
       };
 
-
-      // console.log(file);
     }
   }
+  // Uploads the image of the new User and sets the values needed for the frontend and then the backend notifies the affected devices.
   onProfileChange(event: any): void {
     const file: File = event.target.files[0];
     if (!!file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        let fileType: any;
-        fileType = file.name.split(".").pop();
-        let payload = 21 + fileType.toString().length;
         const formData = new FormData();
         formData.append('file', file);
-        console.log(formData.get('file'));
         this.userService.updateImage(formData, this.selectedUser._id).pipe(take(1)).subscribe((data: any) => {
-          console.log(this.selectedUser.image, data.image);
           this.selectedUser.image = data.image;
           this.allImages.push(data.image);
           this.imageControl.patchValue(data.image);

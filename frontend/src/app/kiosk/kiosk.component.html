@@ -1,11 +1,18 @@
-<div *ngIf="!!config; else noConfig">
-
-    <p-carousel [value]="userdata" [numVisible]="1" [numScroll]="1" [autoplayInterval]="5000" [circular]="userdata.length>1" [showNavigators]="false" [showIndicators]="false" orientation="vertical">
-        <ng-template let-user pTemplate="item">
-            <app-person-card #appCard [person]="user">
+<div *ngIf="!!config; else noConfig" class="container">
+    <div class="column-1">
+        <p-carousel #carousel *ngIf="userdata.length>1; else oneCard" [value]="userdata" [numVisible]="1"
+            [numScroll]="1" [verticalViewPortHeight]="'100%'" [autoplayInterval]="3000" [circular]="true"
+            [showNavigators]="false" [showIndicators]="false" orientation="horizontal">
+            <ng-template let-user pTemplate="item">
+                <app-person-card #appCard [person]="user">
+                </app-person-card>
+            </ng-template>
+        </p-carousel>
+        <ng-template #oneCard>
+            <app-person-card #appCard *ngIf="userdata.length>0" [person]="userdata[0]">
             </app-person-card>
         </ng-template>
-    </p-carousel>
+    </div>
 </div>
 
 <ng-template #noConfig>

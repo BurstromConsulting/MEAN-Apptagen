@@ -6,6 +6,9 @@ const Role = db.role;
 
 const { TokenExpiredError } = jwt;
 
+// AuthJWT Middleware to verify the Web tokens to be valid from the clientside when requesting content that demands authority to view.
+
+
 const catchError = (err, res) => {
   if (err instanceof TokenExpiredError) {
     return res.status(401).send({ message: "Unauthorized! Access Token was expired!" });

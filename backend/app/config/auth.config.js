@@ -1,4 +1,5 @@
 module.exports = {
+  // JWT token timers and the Hash-key for the
     secret: "super-secret-pineapple-key",
     jwtExpiration: 3600,           // 1 hour
     jwtRefreshExpiration: 86400,   // 24 hours

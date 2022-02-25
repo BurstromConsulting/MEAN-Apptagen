@@ -37,7 +37,6 @@ export class UserService extends DataService{
   }
 
   updateStyle(styleId: string, userId: string): Observable<any> {
-    // console.log(styleId);
     const body = {
       styleId: styleId
     }

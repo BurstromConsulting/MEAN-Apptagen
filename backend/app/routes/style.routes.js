@@ -16,11 +16,12 @@ module.exports = function (app, socketio, upload) {
 
   app.post("/api/style/create", controller.createStyle);
 
-  app.put("/api/style/:id/update", controller.updateStyle);
+  app.put("/api/style/:id/update", (req,res) => {
+    controller.updateStyle(req, res, {fontcolor: req.body.fontcolor}, socketio)
+  });
 
   app.post("/api/style/background", upload.single("file"), (req, res) => {
     const fileName = req.file.filename;
-    // console.log(req.body.name);
     controller.saveStyle(req, res, {background: fileName, name: req.body.name, fontcolor: "black"})
   });
 

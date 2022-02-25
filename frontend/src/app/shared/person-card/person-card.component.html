@@ -1,44 +1,20 @@
 <mat-card *ngIf="!!person && !!person.status.availability"
-[ngStyle]="{'background-image': background}">
+[ngStyle]="{'background-image': background}" class="{{cardCSS}}">
 
   <mat-card-header>
-    <div *ngIf="loadedStyles; else noPicture" mat-card-avatar (click)="onPictureClick()" class="example-header-image" [ngClass]="{'edit-picture': editMode}" [ngStyle]="{'color': person.status.availability.color, 'background-image': picture}"></div>
-    <mat-card-title (click)="onTitleClick()">{{person.name}}</mat-card-title>
+    <div *ngIf="loadedStyles; else noPicture" mat-card-avatar (click)="onPictureClick()" class="example-header-image" [ngClass]="{'edit-picture': editMode}" class="{{cardimageCSS}}"[ngStyle]="{'color': person.status.availability.color, 'background-image': picture}"></div>
+    <mat-card-title (click)="onTitleClick()" [ngStyle]="{'color': fontcolor}">{{person.name}}</mat-card-title>
     
     <ng-template #noPicture>
       <app-status-icon [color]="person.status.availability.color" [size]="20"></app-status-icon>
     </ng-template>
     
-    <mat-card-subtitle>
+    <mat-card-subtitle [ngStyle]="{'color': fontcolor}">
       {{person.status.availability.status}}
        - 
       {{person.status.message}}
     </mat-card-subtitle>
   </mat-card-header>
         <mat-card-content *ngIf="detailed">
-            <p>Hejsan hoppsan, jag heter {{person.name}} och jag tycker om mitt tangentbord.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec eros risus. Etiam vestibulum vel est nec tincidunt. Ut at odio at magna vestibulum maximus. Fusce tellus orci, interdum ac dui tristique, volutpat maximus purus. Sed dapibus rutrum tristique. Mauris mollis non mi ac vestibulum. Vestibulum sagittis magna convallis facilisis pharetra. Ut consectetur eget enim in sagittis.
-            </p>
         </mat-card-content>
     </mat-card>
-    
-<!--     
-    <mat-card class="example-card">
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>Shiba Inu</mat-card-title>
-          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-        </mat-card-header>
-        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-        <mat-card-content>
-          <p>
-            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-            bred for hunting.
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button>LIKE</button>
-          <button mat-button>SHARE</button>
-        </mat-card-actions>
-      </mat-card> -->

@@ -12,8 +12,6 @@ module.exports = function(app, socketio, upload) {
 
   app.get("/api/user/all", controller.allAccess);
 
-  // app.post("/api/board/user/card", [authJwt.verifyToken], controller.userCard);
-
   app.get("/api/user/:id", controller.findUserById);
 
   app.post("/api/user/list", controller.findUsersByList);
@@ -23,13 +21,11 @@ module.exports = function(app, socketio, upload) {
   });
 
   app.put("/api/user/:id/style", (req, res) => {
-    // console.log("put:", req.body.styleId)
     controller.updateStyle(req, res, socketio);
   });
 
   app.post("/api/user/:id/profile", upload.single("file"), (req, res) => {
     const fileName = req.file.filename;
-    // console.log(req.file);
     controller.updateImage(req, res, socketio, {image: fileName});
   });
 

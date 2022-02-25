@@ -39,7 +39,7 @@ export class ConfigComponent implements OnInit {
 
   @ViewChild('personInput') personInput!: ElementRef<HTMLInputElement>;
   constructor(private userService: UserService, public configService: ConfigService, public deviceService: DeviceService) {
-
+// on Constructor sets the Config Form Control to the values of the config selected. And removes any additional people.
     this.filteredPersons = this.configCtrl.valueChanges.pipe(
       startWith(null),
       map((input: any | null) => ((!!input && !input.name) ? this._filter(input) : this.availablePersons.slice())),
@@ -52,7 +52,7 @@ export class ConfigComponent implements OnInit {
       this.configService.getAllConfigs(),
       this.deviceService.getAllDevices()
     ]).pipe(take(1)).subscribe(([users, configs, devices]) => {
-
+// Sorts devies, users and configs in alphabetical order
       devices.sort((a: any, b: any) => a.name.localeCompare(b.name));
       configs.sort((a: any, b: any) => a.name.localeCompare(b.name));
       users.sort((a: any, b: any) => a.name.localeCompare(b.name));
@@ -66,15 +66,17 @@ export class ConfigComponent implements OnInit {
   }
 
   sendConfig(): void {
+    //  checks if the selected config we're pushing has the new attribute set or not, meaning we're creating a new config.
     if (!!this.selectedConfig.new) {
       this.selectedConfig.new = false;
       this.configService.createConfig(this.selectedConfig).pipe(take(1)).subscribe((data) => {
-        //console.log("Config Created");
         removeElement(this.newConfigs, data);
         this.selectedConfig._id = data._id;
+        // We've now created a new config, pushing it to the list of available configs
         this.availableConfigs.push(this.selectedConfig);
       })
     }
+    // If it doesnt, we're updating an exsisting config.
     else {
       this.configService.updateConfig(this.selectedConfig).pipe(take(1)).subscribe(() => {
         //console.log("Config updated");
@@ -83,12 +85,11 @@ export class ConfigComponent implements OnInit {
     }
   }
 
-
+  // Sets the config we've clicked on as our Selected config
   onConfigChange(config: any) {
-    // //console.log(e.options[0].value); 
     this.selectedConfig = config;
   }
-
+  // Called when you click "Add config", and appends it to our config list
   newConfig(): void {
     const newconfig = { _id: this.newConfigs.length, name: `New Config ${this.newConfigs.length}`, users: [], new: true };
     this.newConfigs.push(newconfig);
@@ -103,9 +104,10 @@ export class ConfigComponent implements OnInit {
 
 
   remove(person: Person): void {
+    // Removes a person from the list of users on a config.
     removeElement(this.selectedConfig.users, person);
   }
-
+  // Deletes config from the datable and the list of available configs
   deleteConfig(): void {
     if (!!this.selectedConfig.new) {
       removeElement(this.availableConfigs, this.selectedConfig);
@@ -116,7 +118,6 @@ export class ConfigComponent implements OnInit {
       });
     }
   }
-
   private _filter(personName: string): Person[] {
     return this.availablePersons.filter(person => person.name.toLowerCase().includes(personName.toLowerCase()));
   }

@@ -9,9 +9,9 @@
         </mat-list>
     </div>
 
-    <div *ngIf="!!selectedUser">
+    <div *ngIf="!!selectedUser" class="card">
         <app-person-card #previewCard (pictureClick)="uploadPicture.click()" [editMode]="true"
-            [person]="this.selectedUser"></app-person-card>
+            [person]="this.selectedUser" [cardCSS]="'cardMax'" [cardimageCSS]="'cardimageMax'"></app-person-card>
         <div class="user-option-views">
             <h3>Input User Image and Company:</h3>
             <div class="upload-container">
@@ -48,7 +48,7 @@
                         </mat-select>
                     </mat-form-field>
                     <br>
-                    <button class="admin-button" mat-raised-button (click)="updateUser()">Update Style</button>
+                    <button class="admin-button" mat-raised-button (click)="updateUser()">Change Users Style</button>
                     <br>
                 </div>
                 <div class="file-upload-buttons upload-child">
@@ -60,6 +60,13 @@
                         Background</button>
                     <input enctype="multipart/form-data" #uploadBackground hidden="true" type="file"
                         (change)="onUploadedBackground($event)" />
+                </div>
+                <div class="file-upload-buttons upload-child">
+                    <mat-form-field>
+                        <input matInput placeholder="New Font Color" [(ngModel)]="newFontColor"/>
+                    </mat-form-field>
+                    <br>
+                    <button class="admin-button" mat-raised-button (click)="updateFont($event)">Update Selected Styles Font Color</button>
                 </div>
             </div>
         </div>

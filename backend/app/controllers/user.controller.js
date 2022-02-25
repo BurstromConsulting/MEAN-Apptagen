@@ -1,4 +1,3 @@
-var fs = require('fs');
 const db = require("../models");
 const User = db.user;
 const Availability = db.availability;
@@ -7,6 +6,7 @@ const Config = db.config;
 const Company = db.company;
 const ObjectId = require('mongoose').Types.ObjectId;
 
+// Returns all users for publicly available content
 
 exports.allAccess = (req, res) => {
   User.findAllUsers().then((result) => {
@@ -14,13 +14,14 @@ exports.allAccess = (req, res) => {
   });
 };
 
+// Individual Getter and a Getter for an Array of users
+
 exports.findUserById = (req, res) => {
   User.findById(req.params.id, (err, result) => {
     res.status(200).send(result);
   }).select('-password').populate("status.availability style");
 };
 exports.findUsersByList = (req, res) => {
-  // console.log("IdList:",req.body.idList);
   User.find({
     '_id': {
       $in: req.body.idList.map((id) => ObjectId(id))
@@ -29,11 +30,11 @@ exports.findUsersByList = (req, res) => {
     if (err) {
       res.status(500).send({ message: err });
     }
-    // console.log(result);
     res.status(200).send(result);
   }).populate({ path: 'status.availability style', select: '-__v' }).select('-password -__v');
 };
 
+// Requests admin content, also used to confirm you're an admin
 
 exports.adminBoard = (req, res) => {
   User.findById(req.params.id, (err, result) => {
@@ -42,9 +43,14 @@ exports.adminBoard = (req, res) => {
 
 };
 
+// Unused request/Function
+// To-Do: Implement a moderator view to support things like setting a config to a device.
+
 exports.moderatorBoard = (req, res) => {
   res.status(200).send("Moderator Content.");
 };
+
+// Updates a users status/availability then notifies all configs/devices that have that user in it to update their availability.
 
 exports.updateStatus = (req, res, socketio) => {
   const status = {
@@ -62,10 +68,12 @@ exports.updateStatus = (req, res, socketio) => {
         personId: req.params.id
       })
     })
-    //console.log(err, result);
     res.status(200).send();
   })
 };
+
+// Updates a users Company, currently ua unimplemented functionality.
+// To-do: Add sorting users by what Company they belong to and expanding Admin view Functionality based on sub-categories with Update Company.
 
 exports.updateCompany = (req, res, socketio) => {
   const company = {
@@ -73,30 +81,20 @@ exports.updateCompany = (req, res, socketio) => {
   }
   User.updateOne({ _id: req.params.id }, { company: company }, (err, result) => {
     Company.findById(req.body.companyId, (erro, resp) => {
-      // socketio.custom.broadcastStatus({
-      //   status: {
-      //     message: req.body.message,
-      //     availability: resp,
-
-      //   },
-      //   personId: req.params.id})
-      // })
-      //console.log(err, result);
       res.status(200).send();
     })
   })
 }
+
+// Update what style ID the user is pointing at, then notifies all Devices with a Config that user belongs to to update their view.
+
 exports.updateStyle = (req, res, socketio) => {
-
-
-  // console.log(req.body);
   User.updateOne({ _id: req.params.id }, { style: ObjectId(req.body.styleId) }, (err, result) => {
     User.findById(req.params.id, (erro, resp) => {
       if (erro) {
         res.status(500).send({ message: erro });
       }
       else {
-        // console.log("else 1");
         // TO-DO: Re-write this section as a Websocket event for a "Style/updated"-event
         //From Here:
         Config.find((err, result) => {
@@ -105,15 +103,9 @@ exports.updateStyle = (req, res, socketio) => {
             return;
           }
           else {
-            // console.log("else 2");
             result.forEach(element => {
-              // console.log(element);
               element.users.forEach(user => {
-                // console.log(user);
                 if (user._id == req.params.id) {
-                  // console.log("Controller:",user);
-                  // Problemet ligger här med Emits av Style ändringar
-                  console.log("Controller:",element);
                   socketio.custom.broadcastConfig(element);
                 }
               })
@@ -128,15 +120,15 @@ exports.updateStyle = (req, res, socketio) => {
   })
 }
 
+// Update what image the user.image value is referencing, then notifies all Devices with a Config that user belongs to to update their view.
+
 exports.updateImage = (req, res, socketio, dataToUpdate) => {
-  // console.log(req.body);
   User.updateOne({ _id: req.params.id }, dataToUpdate, (err, result) => {
     User.findById(req.params.id, (erro, resp) => {
       if (erro) {
         res.status(500).send({ message: erro });
       }
       else {
-        // console.log("else 1");
         // TO-DO: Re-write this section as a Websocket event for a "image/updated"-event
         //From Here:
         Config.find((err, result) => {
@@ -145,14 +137,9 @@ exports.updateImage = (req, res, socketio, dataToUpdate) => {
             return;
           }
           else {
-            // console.log("else 2");
             result.forEach(element => {
-              // console.log(element);
               element.users.forEach(user => {
-                // console.log(user);
                 if (user._id == req.params.id) {
-                  // console.log(user);
-                  // console.log(element);
                   socketio.custom.broadcastConfig(element);
                 }
               })
@@ -162,15 +149,6 @@ exports.updateImage = (req, res, socketio, dataToUpdate) => {
         //To Here.
         res.status(200).send(resp);
       }
-      // socketio.custom.broadcastStatus({
-      //   status: {
-      //     message: req.body.message,
-      //     availability: resp,
-
-      //   },
-      //   personId: req.params.id})
-      // })
-      //console.log(err, result);
     }).select('-password').populate("status.availability style roles");
   })
 }

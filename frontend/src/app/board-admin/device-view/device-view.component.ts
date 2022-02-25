@@ -34,12 +34,12 @@ export class DeviceViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.configControl.setValue(this.nullConfig);
+    // Fork Join ensures that both of these calls are done before we call any functions on them.
     forkJoin([
       this.configService.getAllConfigs(),
       this.deviceService.getAllDevices()
     ]).pipe(take(1)).subscribe(([configs, devices]) => {
-      //console.log(devices, configs);
-      
+      //Alphabetical sorting of them, then we assign them to various local values.
       devices.sort((a: any,b: any) => a.name.localeCompare(b.name));
       configs.sort((a: any,b: any) => a.name.localeCompare(b.name));
       this.allDevices = devices;
@@ -47,24 +47,22 @@ export class DeviceViewComponent implements OnInit {
       this.availableConfigs.push(this.nullConfig);
       this.selectedDevice = this.allDevices[0];
       this.selectedConfig = this.selectedDevice.config;
-      //console.log("this selected",this.selectedDevice.config);
       if(!!this.selectedDevice.config){
         this.configControl.patchValue(this.availableConfigs.filter((config: any) => config._id === this.selectedDevice.config._id)[0]);
       }
+      //Gets the location from each Device, currently not used.
+      //To-do: Add filtering and sorting based off of device Location
       this.allDevices.forEach((element: any) => {
-        //console.log(element);
         if(this.deviceLocations.includes(element.location)){
         }
         else {
         this.deviceLocations.push(element.location);
         }
       });
-      //console.log("Device Locations", this.deviceLocations);
     })
   }
 
   currentDevice(device: any): void{
-    //console.log("Device: ",device);
     this.selectedDevice = device;
     if(!!this.selectedDevice.config){
       this.configControl.patchValue(this.availableConfigs.filter((config: any) => config._id === this.selectedDevice.config._id)[0]);
@@ -76,22 +74,21 @@ export class DeviceViewComponent implements OnInit {
   updateDevice(): void {
     
     let configSettings: null = null;
+    // Checks if the selected config settings matches our null config. So that we dont send bad data to the backend.
     if(this.configControl.value !== this.nullConfig){
       configSettings = this.configControl.value;
     }
-    this.deviceService.updateDeviceConfig(this.selectedDevice, configSettings).pipe(take(1)).subscribe( () =>{
-      //console.log("Device updated");
-      // this.socket.sendConfigUpdate(configSettings, this.selectedDevice.uuid);
+    this.deviceService.updateDeviceConfig(this.selectedDevice, configSettings).pipe(take(1)).subscribe( () =>{  
+      // Backend handles all of the actions for when the Device's config is updated
     });
   }
+  // Deletes device from backend and from Device list
   deleteDevice(): void {
     this.deviceService.removeDevice(this.selectedDevice).pipe(take(1)).subscribe( () =>{
-      //console.log("Device Deleted");
       removeElement(this.allDevices, this.selectedDevice);
     });
   }
   selected(event: MatSelectChange): void {
-    // //console.log(event);
     this.selectedDevice.config = event.value;
   }
 }

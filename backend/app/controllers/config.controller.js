@@ -4,6 +4,8 @@ const Config = db.config;
 const Device = db.device;
 const ObjectId = require('mongoose').Types.ObjectId;
 
+// Two config lookup functions to retrieve the data you're searching for from your MongoDB Backend
+
 exports.findAllConfig = (req, res) => {
     Config.find((err, result) => {
         res.status(200).send(result);
@@ -14,6 +16,10 @@ exports.findConfigById = (req, res) => {
         res.status(200).send(result);
     }).populate({ path: 'users', select: '-password -__v' }).select('-__v');
 };
+
+// This Call sends a request to update the Config based on the users being sent from the Admin view / Config.
+// Then it will broadcast to all Devices listening to this config at "Room/ConfigID" Telling them to update
+
 exports.updateConfig = (req, res, socketio) => {
     const userIdArray = [];
     req.body.users.forEach(element => {
@@ -37,7 +43,7 @@ exports.updateConfig = (req, res, socketio) => {
 };
 
 
-
+// This makes a new config in your database
 
 exports.createConfig = (req, res) => {
     //console.log(req.body);
@@ -58,6 +64,8 @@ exports.createConfig = (req, res) => {
         }
     });
 };
+
+// This deletes your config from your database.
 
 exports.deleteConfig = (req, res) => {
     Config.deleteOne({ _id: req.params.id }, (err, result) => {
