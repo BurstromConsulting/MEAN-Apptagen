@@ -3,15 +3,16 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.2.
 
 ## Table of Content
-    * [Introduction](#introduction)
-    * [Kiosk/End Point View](#kioskend-point-view)
-    * [Admin Functions](#admin-functions)
-    * [Editing Configurations](#editing-configurations)
-    * [Editing Devices](#editing-devices)
-    * [Editing Styles](#editing-styles)
-    * [Getting Statistics](#getting-statistics)
-    * [Sign-up/Sign-in](#sign-upsign-in)
-    * [User Functionality](#user-functionality)
+[Introduction](#introduction)
+[Kiosk/End Point View](#kioskend-point-view)
+[Admin Functions](#admin-functions)
+- [Editing Configurations](#editing-configurations)
+- [Editing Devices](#editing-devices)
+- [Editing Styles](#editing-styles)
+
+[Getting Statistics](#getting-statistics)
+[Sign-up/Sign-in](#sign-upsign-in)
+[User Functionality](#user-functionality)
     
 <!-- * [License](#license) -->
     
