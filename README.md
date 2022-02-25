@@ -31,7 +31,7 @@ To inform anyone near your office or any location where it might be relevant to 
 
 The Kiosk view is intended to be the end point, where we present a summary of all users who's information we want to present on the display. Its not intended to be a point where any data is edited, only updating and presenting data recieved in real time.
 ## Admin Functions
-![Admin board](./github-readme-images/admin.gif)
+![Admin board](./github-readme-images/Admin.gif)
 
 The admininstrator has multiple functionalities, the currently implemented ones are Configuration, Device and Style view. Statistics is still in development. All of these functionalities update End points in real time.
 
